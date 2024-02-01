@@ -23,9 +23,13 @@ public class Users {
     @Id
     private Long id;
 
-    private String nama;
+    private String username;
+
+    private String password;
 
     private String no_hp;
+
+    private String email;
 
     private LocalDateTime created_date;
 

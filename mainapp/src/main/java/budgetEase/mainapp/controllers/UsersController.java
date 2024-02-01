@@ -46,7 +46,9 @@ public class UsersController {
       Users users = new Users();
 
       users.setId(Long.parseLong(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")).toString()));
-      users.setNama(data.getNama());
+      users.setUsername(data.getUsername());
+      users.setPassword(data.getPassword());
+      users.setEmail(data.getEmail());
       users.setNo_hp(data.getNo_hp());
       users.setCreated_date(LocalDateTime.now());
 
@@ -81,7 +83,9 @@ public class UsersController {
       if (existingUsers.isPresent()) {
         Users usersToUpdate = existingUsers.get();
 
-        usersToUpdate.setNama(param.getNama());
+        usersToUpdate.setUsername(param.getUsername());
+        usersToUpdate.setPassword(param.getPassword());
+        usersToUpdate.setEmail(param.getEmail());
         usersToUpdate.setNo_hp(param.getNo_hp());
         usersToUpdate.setCreated_date(LocalDateTime.now());
         usersRepo.save(usersToUpdate);

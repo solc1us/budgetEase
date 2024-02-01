@@ -185,7 +185,7 @@ const create = (baseURL = config.BASE_URL) => {
   // Auth
   const authRequest = (data) => api.post("auth/signin", data);
   const logoutRequest = (data) => api.post("auth/signout", data);
-  const loginRequest = (data) => api.post("login/edc", data);
+  const loginRequest = (data) => api.post("main/login", data);
   const authForgotPasswordRequest = (data) =>
     api.post("auth/forgot-password", data);
   const authResetPasswordRequest = (data) =>
