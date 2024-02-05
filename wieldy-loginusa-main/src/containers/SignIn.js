@@ -85,6 +85,11 @@ const SignIn = () => {
                 <Input type="password" placeholder="Password" />
               </Form.Item>
               <Form.Item>
+                <Button type="primary" className="gx-mb-0" htmlType="submit">
+                  <IntlMessages id="app.userAuth.signIn" />
+                </Button>
+              </Form.Item>
+              <Form.Item>
                 <p className="gx-signin-switch-login-register">Don't have an account? <Link to="/signup">Register here!</Link></p>
               </Form.Item>
             </Form>
