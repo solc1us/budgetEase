@@ -72,7 +72,7 @@
 
 .@{class-prefix}-app-login-container {
   position: relative;
-  max-width: 680px;
+  max-width: 500px;
   width: 94%;
   margin: 0 auto;
 
@@ -94,18 +94,28 @@
 .@{class-prefix}-app-login-main-content {
   .flex-display(flex, row, wrap);
   background-color: @white-color;
+  justify-content: center;
+  align-content: center;
   .box-shadow(@gx-card-shadow);
   .border-radius(@border-radius-lg + 2px);
   font-size: 14px;
   overflow: hidden;
 }
 
+.@{class-prefix}-app-login-h1 {
+  font-weight: 600;
+  font-size: 26px;
+  text-align: center;
+  margin-bottom: 0.75em;
+}
+
 .@{class-prefix}-app-login-content {
   padding: 35px 35px 20px;
-  width: 60%;
+  width: 80%;
 
   & .ant-input {
     background-color: @grey-3;
+    text-align: center;
 
     &:focus {
       box-shadow: none;
@@ -223,4 +233,8 @@
   & .ant-form-item-control-input {
     min-height: 40px;
   }
+}
+
+.@{class-prefix}-signin-switch-login-register {
+  text-align: center;
 }

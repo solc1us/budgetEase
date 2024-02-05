@@ -1,7 +1,7 @@
 // const TARGET = process.env.REACT_APP_API_URL || 'localhost';
 // const PORT = process.env.REACT_APP_API_PORT || 1337;
 // const HTTP = process.env.REACT_APP_API_HTTP || 'http';
-const BASE_URL = "https://localhost:8080/"; //'https://my-json-server.typicode.com/';
+const BASE_URL = "http://localhost:8080/"; //'https://my-json-server.typicode.com/';
 const SAMPLE_API_URL = "http://8.215.32.207/testprovider/"; //'https://my-json-server.typicode.com/';
 
 module.exports = {
