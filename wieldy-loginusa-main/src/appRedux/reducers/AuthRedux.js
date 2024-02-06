@@ -4,8 +4,8 @@ import Immutable from "seamless-immutable";
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  loginUserRequest: ["dataUser"],
-  loginUserSuccess: ["dataUser"],
+  loginUserRequest: ["user"],
+  loginUserSuccess: ["user"],
   signinUser: ["user", "history"],
   signinUserSuccess: ["payload"],
   showAuthMessage: ["message"],
@@ -62,12 +62,12 @@ export const AuthSelectors = {
 /* ------------- Reducers ------------- */
 
 // request the data from an api
-export const loginUser = (state, { dataUser }) =>
-  state.merge({ loader: true, dataUser });
+export const loginUser = (state, { user }) =>
+  state.merge({ loader: true, user });
 
 // successful api lookup
-export const loginUserSuccess = (state, {dataUser}) => {
-  return state.merge({ loader: false, authUser: dataUser });
+export const loginUserSuccess = (state, {user}) => {
+  return state.merge({ loader: false, authUser: user });
 };
 
 export const signinuser = (state, { user }) =>

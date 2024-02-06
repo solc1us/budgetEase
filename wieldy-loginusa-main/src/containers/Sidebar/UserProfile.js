@@ -1,5 +1,5 @@
 import React from "react";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Avatar, Popover} from "antd";
 // import {userSignOut} from "../../appRedux/actions";
 import AuthActions from "../../appRedux/reducers/AuthRedux";
@@ -16,6 +16,18 @@ const UserProfile = () => {
       <li onClick={() => dispatch(AuthActions.userSignOut())}>Logout</li>
     </ul>
   );
+  
+  // const auth = localStorage.getItem("user_credent");
+
+  // console.log(auth + "auth")
+  
+  // const { user } = useAuth();
+
+  // console.log(user + "user")
+
+  const { authUser } = useSelector(({ auth }) => auth);
+
+  console.log(authUser + "authUser")
 
   return (
     <div className="gx-flex-row gx-align-items-center gx-mb-4 gx-avatar-row">

@@ -18,16 +18,13 @@ import config from "../util/config";
 
 import IntlMessages from "util/IntlMessages";
 import CircularProgress from "../components/CircularProgress";
-import TwitterOutlined from "@ant-design/icons/lib/icons/TwitterOutlined";
-import GithubOutlined from "@ant-design/icons/lib/icons/GithubOutlined";
-import FacebookOutlined from "@ant-design/icons/lib/icons/FacebookOutlined";
-import GoogleOutlined from "@ant-design/icons/lib/icons/GoogleOutlined";
 
 const SignIn = () => {
   const dispatch = useDispatch();
   const { loader, alertMessage, showMessage, authUser } = useSelector(
     ({ auth }) => auth
   );
+
   const history = useHistory();
 
   useEffect(() => {

@@ -27,132 +27,46 @@ function delay() {
 export function* signinUser(api, action) {
   const { user, history } = action;
   // console.log("USER TERPASSINFG ???", user);
-  const { email, password } = user;
+  const { username, password } = user;
 
   const dummyData = {name: 'test'}
   localStorage.setItem("user_credent",JSON.stringify(dummyData))
   yield put(AuthActions.signinUserSuccess(dummyData))
 
-  // try {
-  //   const signInUserResponse = yield call(api.authRequest, {
-  //     username: email,
-  //     password,
-  //   });
-  //   console.log("signInUserResponse", JSON.stringify(signInUserResponse));
-  //   if (signInUserResponse.ok) {
-  //     if (signInUserResponse.data.status === "302") {
-  //       Modal.error({
-  //         centered: true,
-  //         icon: <ExclamationCircleFilled />,
-  //         okType: "danger",
-  //         content: (
-  //           <div>
-  //             <p>
-  //               {signInUserResponse &&
-  //               signInUserResponse.data &&
-  //               signInUserResponse.data.message
-  //                 ? signInUserResponse.data.message
-  //                 : "Your password has been expired, must be changed"}
-  //             </p>
-  //           </div>
-  //         ),
-  //         title: (
-  //           <Row
-  //             type="flex"
-  //             justify="start"
-  //             style={{ alignItems: "center" }}
-  //             gutter={[5, 0]}
-  //           >
-  //             <Col>
-  //               <span>Warning !</span>
-  //             </Col>
-  //           </Row>
-  //         ),
-  //         onOk() {
-  //           const credent = {
-  //             ...signInUserResponse.data.result,
-  //             accessToken: signInUserResponse.headers["x-auth-token"],
-  //           };
-  //           const credentWithLoginTime = {
-  //             ...credent,
-  //             logintime: moment().format("YYYY-MM-DD HH:mm:ss"),
-  //           };
-  //           localStorage.setItem(
-  //             "change_credent",
-  //             JSON.stringify(credentWithLoginTime)
-  //           );
-  //           if (history) history.push("reset-password");
-  //         },
-  //         onCancel() {},
-  //       });
-  //       yield put(AuthActions.showAuthLoader(false));
-  //       return;
-  //     }
+  try {
+    const signInUserResponse = yield call(api.authRequest, {
+      username: username,
+      password: password,
+    });
 
-  //     const credent = {
-  //       ...signInUserResponse.data.result,
-  //       accessToken: signInUserResponse.headers["x-auth-token"],
-  //     };
-  //     if (!credent.accessToken) {
-  //       Modal.error({
-  //         centered: true,
-  //         icon: <ExclamationCircleFilled />,
-  //         okType: "danger",
-  //         content: (
-  //           <div>
-  //             <p>{"Login Failed, token not found !"}</p>
-  //           </div>
-  //         ),
-  //         title: (
-  //           <Row
-  //             type="flex"
-  //             justify="start"
-  //             style={{ alignItems: "center" }}
-  //             gutter={[5, 0]}
-  //           >
-  //             <Col>
-  //               <span>Warning !</span>
-  //             </Col>
-  //           </Row>
-  //         ),
-  //         onOk() {},
-  //         onCancel() {},
-  //       });
-  //       yield put(AuthActions.showAuthLoader(false));
-  //     }
-  //     const credentWithLoginTime = {
-  //       ...credent,
-  //       logintime: moment().format("YYYY-MM-DD HH:mm:ss"),
-  //     };
-  //     localStorage.setItem(
-  //       "user_credent",
-  //       JSON.stringify(credentWithLoginTime)
-  //     );
-  //     yield put(AuthActions.signinUserSuccess(signInUserResponse.data.message));
-  //   } else {
-  //     //set attempt disini
-  //     console.log("masuk sini ", signInUserResponse);
-  //     yield put(
-  //       AuthActions.setAttempRemaining(
-  //         signInUserResponse.data &&
-  //           signInUserResponse.data.result &&
-  //           signInUserResponse.data.result.remaining_attempt > -1
-  //           ? signInUserResponse.data.result.remaining_attempt
-  //           : -1
-  //       )
-  //     );
-  //     yield put(AuthActions.showAuthLoader(false));
-  //   }
-  // } catch (error) {
-  //   yield put(AuthActions.showAuthMessage(error));
-  // }
+    // console.log("signInUserResponse", signInUserResponse.data);
+    // // console.log("signin true ?", signInUserResponse.ok);
+
+    if (signInUserResponse.ok === true) {
+      yield put(
+        AuthActions.signinSuccess(signInUserResponse.data.data)
+      );
+      localStorage.setItem(
+        "user_credent",
+        JSON.stringify(signInUserResponse.data.data)
+      );
+
+      history.push("/");
+    } else if (signInUserResponse.ok === false) {
+      console.log(signInUserResponse.data.data.message + "asdasd");
+      console.log("asdas")
+      history.push("main/login")
+    }
+  } catch (error) {
+    console.log(error);
+  }
   
 }
 
 export function* loginUserRequest(api, action) {
-  const { dataUser, history } = action;
+  const { user, history } = action;
   // console.log("USER TERPASSINFG ???", user);
-  const { username, password } = dataUser;
+  const { username, password } = user;
 
   // const dummyData = {name: 'test'}
   // localStorage.setItem("user_credent",JSON.stringify(dummyData))
@@ -163,19 +77,17 @@ export function* loginUserRequest(api, action) {
       username,
       password,
     });
-    console.log("signInUserResponse", signInUserResponse);
-    if (signInUserResponse.ok) {
 
-      const credent = {
-        username: signInUserResponse.data.username,
-        logintime: moment().format("YYYY-MM-DD HH:mm:ss"),
-      };
+    // console.log("signInUserResponse", signInUserResponse);
+
+    if (signInUserResponse.ok) {
       localStorage.setItem(
         "user_credent",
-        JSON.stringify(credent)
+        JSON.stringify(signInUserResponse.data.data)
       );
-      yield put(AuthActions.loginUserSuccess(credent));
+      yield put(AuthActions.loginUserSuccess(signInUserResponse.data.data));
     } else {
+      console.log("signInUserResponse", signInUserResponse.data.message);
       yield put(AuthActions.showAuthLoader(false));
     }
   } catch (error) {
@@ -188,35 +100,9 @@ export function* userSignOut(api, action) {
   const { message } = action;
   yield put(LoadingOverlayActions.showLoadingOverlay(true, "Logging off ..."));
   try {
-    const signOutResponse = yield call(api.logoutRequest);
-    console.log("signOutResponse", JSON.stringify(signOutResponse));
+    // const signOutResponse = yield call(api.logoutRequest);
+    // console.log("signOutResponse", signOutResponse);
 
-    if (message) {
-      Modal.error({
-        centered: true,
-        icon: <ExclamationCircleFilled />,
-        okType: "danger",
-        content: (
-          <div>
-            <p>{message}</p>
-          </div>
-        ),
-        title: (
-          <Row
-            type="flex"
-            justify="start"
-            style={{ alignItems: "center" }}
-            gutter={[5, 0]}
-          >
-            <Col>
-              <span>Warning !</span>
-            </Col>
-          </Row>
-        ),
-        onOk() {},
-        onCancel() {},
-      });
-    }
     localStorage.removeItem("user_credent");
     yield put(AuthActions.userSignOutSuccess(""));
     // } else {

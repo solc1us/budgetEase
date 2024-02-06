@@ -36,7 +36,8 @@ const create = (baseURL = config.BASE_URL) => {
   });
 
   api.addResponseTransform(async (response) => {
-    if (response.config.url === "/login/edc") {
+    if (response.config.url === "main/login") {
+      console.log("response", response)
       if (!response.ok && response.data) {
         Modal.warning({
           centered: true,
@@ -44,7 +45,11 @@ const create = (baseURL = config.BASE_URL) => {
           okType: "danger",
           content: (
             <div>
-              <p>Gagal Login!</p>
+              <p>
+              {response.data.message
+                ? response.data.message
+                : "Unknown Error From Backend (Code: 1)"}
+            </p>
             </div>
           ),
           title: (
@@ -183,7 +188,7 @@ const create = (baseURL = config.BASE_URL) => {
   const getComment = (data) => api.get("typicode/demo/comments", data);
 
   // Auth
-  const authRequest = (data) => api.post("auth/signin", data);
+  const authRequest = (data) => api.post("main/login", data);
   const logoutRequest = (data) => api.post("auth/signout", data);
   const loginRequest = (data) => api.post("main/login", data);
   const authForgotPasswordRequest = (data) =>
