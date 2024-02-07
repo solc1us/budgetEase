@@ -13,6 +13,8 @@ import {
   userTwitterSignIn,
 } from "../appRedux/actions";
 
+import AuthActions from "../appRedux/reducers/AuthRedux";
+
 import IntlMessages from "util/IntlMessages";
 import { message } from "antd/lib/index";
 import CircularProgress from "../components/CircularProgress";
@@ -44,8 +46,10 @@ const SignUp = (props) => {
   const onFinishFailed = (errorInfo) => {};
 
   const onFinish = (values) => {
+    console.log(values)
+
     dispatch(showAuthLoader());
-    dispatch(userSignUp(values));
+    dispatch(AuthActions.registerUserRequest(values));
   };
 
   const [password, setPassword] = useState("");

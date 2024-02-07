@@ -4,8 +4,12 @@ import Immutable from "seamless-immutable";
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
+  registerUserRequest: ["user", "history"],
+  registerUserSuccess: ["payload"],
   loginUserRequest: ["user"],
   loginUserSuccess: ["user"],
+  registerUserRequest: ["user", "history"],
+  registerUserSuccess: ["payload"],
   signinUser: ["user", "history"],
   signinUserSuccess: ["payload"],
   showAuthMessage: ["message"],
@@ -42,6 +46,7 @@ export const INITIAL_STATE = Immutable({
   alertMessage: "",
   showMessage: false,
   initURL: "",
+  loginUserData: null,
   authUser: localStorage.getItem("user_credent")
     ? JSON.parse(localStorage.getItem("user_credent"))
     : null,
@@ -57,9 +62,24 @@ export const INITIAL_STATE = Immutable({
 
 export const AuthSelectors = {
   getData: (state) => state.data,
+  getLoginUserData : (state) => state.loginUserData,
 };
 
 /* ------------- Reducers ------------- */
+
+// request the data from an api
+export const registerUserRequest = (state, { user }) => 
+  state.merge({ loader: true, user });
+
+export const registerUserSuccess = (state, action) => {
+  const { payload } = action;
+  return state.merge({
+    loader: false,
+    loginUserData: payload,
+    error: null,
+    remaining_attempt: -1,
+  });
+}
 
 // request the data from an api
 export const loginUser = (state, { user }) =>
@@ -142,6 +162,10 @@ export const setattemp = (state, action) => {
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
+  //regist
+  [Types.REGISTER_USER_REQUEST]: registerUserRequest,
+  [Types.REGISTER_USER_SUCCESS]: registerUserSuccess,
+  //
   [Types.LOGIN_USER_REQUEST]: loginUser,
   [Types.LOGIN_USER_SUCCESS]: loginUserSuccess,
   //

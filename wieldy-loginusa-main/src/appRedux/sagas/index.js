@@ -12,6 +12,7 @@ import { CommentsTypes } from "../reducers/CommentsRedux";
 
 import { templateRequest } from "./TemplateSagas";
 import {
+  registerUserRequest,
   loginUser,
   signinUser,
   userSignOut,
@@ -35,6 +36,7 @@ export default function* root() {
   // console.log('ROOT sagas JALAN !')
   yield all([
     takeLatest(TemplateTypes.TEMPLATE_REQUEST, templateRequest, api),
+    takeLatest(AuthTypes.REGISTER_USER_REQUEST, registerUserRequest, api),
     takeLatest(AuthTypes.LOGIN_USER_REQUEST, loginUserRequest, api),
     takeLatest(AuthTypes.SIGNIN_USER, signinUser, api),
     takeLatest(AuthTypes.USER_SIGN_OUT, userSignOut, api),

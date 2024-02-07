@@ -19,8 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
-
 @RestController
 @RequestMapping("/main")
 public class BudgetEaseController {
@@ -70,6 +68,13 @@ public class BudgetEaseController {
 
     try {
 
+      Optional<Users> usernameCheck = usersRepo.findByUsername(data.getUsername());
+      
+      if (usernameCheck.isPresent()) {
+        msg.setMessage("Username sudah ada.");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
+      }
+
       Users users = new Users();
 
       users.setId(Long.parseLong(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")).toString()));
@@ -93,7 +98,5 @@ public class BudgetEaseController {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
     }
   }
-  
 
-  
 }

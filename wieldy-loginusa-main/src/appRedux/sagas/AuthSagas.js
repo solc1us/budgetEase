@@ -3,7 +3,7 @@ import AuthActions from "../reducers/AuthRedux";
 
 import LoadingOverlayActions from "../reducers/LoadingOverlayRedux";
 
-import { ExclamationCircleFilled } from "@ant-design/icons";
+import { CheckCircleFilled, ExclamationCircleFilled } from "@ant-design/icons";
 import { Modal, Row, Col } from "antd";
 import moment from "moment";
 // import { auth } from "../../firebase/firebase";
@@ -61,6 +61,55 @@ export function* signinUser(api, action) {
     console.log(error);
   }
   
+}
+
+export function* registerUserRequest(api, action) {
+  const { user, history } = action;
+  const { username, password, no_hp, email } = user;
+
+  try {
+    const responses = yield call(api.register, {
+      username,
+      password,
+      no_hp,
+      email,
+    });
+
+    if (responses.ok === true) {
+      // // console.log("e dari server register ", responses);
+
+      yield put(AuthActions.registerUserSuccess(responses.data.data));
+      history.push("/sigin")
+      Modal.success({
+        centered: true,
+        icon: <CheckCircleFilled />,
+        okType: "Pemberitahuan !",
+        content: (
+          <div className="gx-text-dark">
+            <p>{responses.data.message}</p>
+          </div>
+        ),
+        title: (
+          <Row
+            type="flex"
+            justify="start"
+            style={{ alignItems: "center" }}
+            gutter={[5, 0]}
+          >
+            <Col>
+              <span>Berhasil !</span>
+            </Col>
+          </Row>
+        ),
+        onOk() {},
+        onCancel() {},
+      });
+    } else {
+      yield put(AuthActions.showAuthLoader(false));
+    }
+  } catch (error) {
+    // console.log(error);
+  }
 }
 
 export function* loginUserRequest(api, action) {

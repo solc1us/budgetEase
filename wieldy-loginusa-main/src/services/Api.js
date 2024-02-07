@@ -191,6 +191,7 @@ const create = (baseURL = config.BASE_URL) => {
   const authRequest = (data) => api.post("main/login", data);
   const logoutRequest = (data) => api.post("auth/signout", data);
   const loginRequest = (data) => api.post("main/login", data);
+  const register = (data) => api.post("main/register", data);
   const authForgotPasswordRequest = (data) =>
     api.post("auth/forgot-password", data);
   const authResetPasswordRequest = (data) =>
@@ -207,6 +208,7 @@ const create = (baseURL = config.BASE_URL) => {
     authRequest,
     logoutRequest,
     loginRequest,
+    register,
     authForgotPasswordRequest,
     authResetPasswordRequest,
     authChangePasswordRequest,
