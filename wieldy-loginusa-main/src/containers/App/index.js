@@ -8,6 +8,8 @@ import AppLocale from "../../lngProvider";
 import MainApp from "./MainApp";
 import SignIn from "../SignIn";
 import SignUp from "../SignUp";
+import Home from "../HomePage";
+
 import {setInitUrl} from "../../appRedux/actions";
 
 import LoadingOverlay from "react-loading-overlay-ts";
@@ -118,7 +120,7 @@ const App = () => {
   useEffect(() => {
     if (location.pathname === '/') {
       if (authUser === null) {
-        history.push('/signin');
+        history.push('/home');
       } else if (initURL === '' || initURL === '/' || initURL === '/signin') {
         history.push('/sample');
       } else {
@@ -140,6 +142,7 @@ const App = () => {
         locale={currentAppLocale.locale}
         messages={currentAppLocale.messages}>
         <Switch>
+          <Route exact path='/home' component={Home}/>
           <Route exact path='/signin' component={SignIn}/>
           <Route exact path='/signup' component={SignUp}/>
           

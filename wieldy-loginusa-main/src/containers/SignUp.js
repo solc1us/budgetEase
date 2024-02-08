@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Button, Checkbox, Form, Input } from "antd";
 import { Link, useHistory } from "react-router-dom";
 
+import budgetEaseLogoMain from "./budgetEase-Logo-Main.png"
+
 import { useDispatch, useSelector } from "react-redux";
 import {
   hideMessage,
@@ -75,11 +77,8 @@ const SignUp = (props) => {
     <div className="gx-app-login-wrap">
       <div className="gx-app-login-container">
         <div className="gx-app-logo-content">
-          <div className="gx-app-logo-content-bg">
-            <img src={"https://via.placeholder.com/272x395"} alt="Neature" />
-          </div>
           <div className="gx-app-logo">
-            <img alt="example" src="/assets/images/logo.png" />
+            <img alt="example" src={budgetEaseLogoMain} width={300}/>
           </div>
         </div>
         <div className="gx-app-login-main-content">
@@ -139,7 +138,7 @@ const SignUp = (props) => {
                 />
               </FormItem>
               <Form.Item>
-                <Button type="primary" className="gx-mb-0" htmlType="submit">
+                <Button type="primary" className="gx-mb-0 gx-w-100" htmlType="submit">
                   <IntlMessages id="app.userAuth.signUp" />
                 </Button>
               </Form.Item>

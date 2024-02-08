@@ -3,6 +3,8 @@ import { Button, Checkbox, Form, Image, Input, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 
+import budgetEaseLogoMain from "./budgetEase-Logo-Main.png";
+
 import {
   hideMessage,
   showAuthLoader,
@@ -49,7 +51,11 @@ const SignIn = () => {
   return (
     <div className="gx-app-login-wrap">
       <div className="gx-app-login-container">
-        <img src={"https://imgur.com/rzn7ZbK"} width={100} />
+        <div className="gx-app-logo-content">
+          <div className="gx-app-logo">
+            <img alt="example" src={budgetEaseLogoMain} width={300} />
+          </div>
+        </div>
         <div className="gx-app-login-main-content">
           <div className="gx-app-login-content">
             <h1 className="gx-app-login-h1">Login</h1>
@@ -82,12 +88,15 @@ const SignIn = () => {
                 <Input type="password" placeholder="Password" />
               </Form.Item>
               <Form.Item>
-                <Button type="primary" className="gx-mb-0" htmlType="submit">
+                <Button type="primary" className="gx-mb-0 gx-w-100" htmlType="submit">
                   <IntlMessages id="app.userAuth.signIn" />
                 </Button>
               </Form.Item>
               <Form.Item>
-                <p className="gx-signin-switch-login-register">Don't have an account? <Link to="/signup">Register here!</Link></p>
+                <p className="gx-signin-switch-login-register">
+                  Don't have an account?{" "}
+                  <Link to="/signup">Register here!</Link>
+                </p>
               </Form.Item>
             </Form>
           </div>
