@@ -57,7 +57,9 @@ const Home = () => {
               </div>
             </div>
             <div className="gx-app-home-mengapa">
-              <h1>Mengapa budgetEase?</h1>
+              <h1>
+                Mengapa budget<span style={{ color: "#F56363" }}>Ease</span>?
+              </h1>
               <div className="gx-app-home-mengapa-list">
                 <p>1. Mengendalikan uang yang dimiliki</p>
                 <p>2. Fokus pada tujuan keuangan</p>
@@ -68,10 +70,64 @@ const Home = () => {
             </div>
             <div className="gx-app-home-testimoni">
               <h1>Apa kata mereka?</h1>
-              <p>Cerita mereka tentang budgetEase</p>
-              <div className="">
-
+              <p className="gx-alt-title-testimoni">
+                Cerita mereka tentang budget
+                <span style={{ color: "#F56363" }}>Ease</span>
+              </p>
+              <div className="gx-app-home-testimoni-box-container">
+                <div className="gx-app-home-testimoni-box-content">
+                  <h2>Sasi</h2>
+                  <p>
+                    "Saya merasa sangat terbantu dengan budgetEase. Dengan fitur
+                    pemantauan pengeluaran, saya dapat melihat dengan jelas pola
+                    pengeluaran saya dan lebih mudah membuat anggaran.
+                    budgetEase benar-benar memudahkan hidup saya dalam mengelola
+                    keuangan secara lebih efisien."
+                  </p>
+                </div>
+                <div className="gx-app-home-testimoni-box-content">
+                  <h2>Bilal</h2>
+                  <p>
+                    "Sebagai pebisnis kecil, budgetEase memudahkan pencatatan
+                    transaksi bisnis dan pemantauan arus kas. Saya dapat dengan
+                    cepat mengakses laporan keuangan, membantu pengambilan
+                    keputusan yang lebih cerdas untuk pertumbuhan bisnis saya."
+                  </p>
+                </div>
+                <div className="gx-app-home-testimoni-box-content">
+                  <h2>Fahira</h2>
+                  <p>
+                    "budgetEase membawa kemudahan dalam merencanakan keuangan
+                    selama masa studi. Saya dapat dengan mudah melihat
+                    pengeluaran, serta mengalokasikan dana untuk kebutuhan
+                    akademik dan kehidupan sosial. Ini benar-benar membantu
+                    menghindari kesusahan keuangan."
+                  </p>
+                </div>
               </div>
+            </div>
+            <div className="gx-app-home-footer">
+              <div className="gx-app-home-footer-container">
+                <div className="gx-app-home-footer-l">
+                  <img src={budgetEaseLogoMain} height={80} />
+                  <h1>budgetEase - PT Gemilang Keuangan Indonesia</h1>
+                  <p>Perum Griya Alam Sentosa</p>
+                  <p>
+                    Jl. Griya Alam Sentosa, Blok R-23 No 9, RT 16 RW 10, Kel.
+                    Pasirangin, Kec. Cileungsi, Kabupaten Bogor, Jawa Barat
+                    16820
+                  </p>
+                </div>
+                <div className="gx-app-home-footer-r">
+                  <h1>Bantuan</h1>
+                  <p><Link to="/signin">Login</Link></p>
+                  <p><Link to="/signup">Register</Link></p>
+                  <p><Link>085888864526</Link></p>
+                </div>
+              </div>
+            </div>
+            <div className="gx-app-home-footer-c">
+              <p>© 2024 budgetEase - PT Gemilang Keuangan Indonesia. All Rights Reserved.</p>
             </div>
           </div>
         </div>

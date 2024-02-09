@@ -59,6 +59,7 @@ p.gx-app-home-header-register {
 
   p {
     font-size: 48px;
+    margin-bottom: 0.5em;
   }
 
 }
@@ -98,10 +99,10 @@ p.gx-app-home-header-register {
 
 .@{class-prefix}-app-home-box-content {
   padding: 35px 20px;
-  width: 80%;
+  width: 85%;
 
   p {
-    font-size: 20px;
+    font-size: 24px;
     line-height: 36px;
     text-align: center;
     margin-bottom: 0;
@@ -141,7 +142,7 @@ p.gx-app-home-header-register {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 50px 0;
+  margin: 64px 0;
   text-align: center;
   
   h1 {
@@ -151,7 +152,7 @@ p.gx-app-home-header-register {
   }
 
   p {
-    font-size: 20px;
+    font-size: 24px;
     margin-bottom: 0.5em;
   }
 
@@ -159,5 +160,121 @@ p.gx-app-home-header-register {
 
 .@{class-prefix}-app-home-testimoni {
   background-color: white;
-  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 0;
+
+  h1 {
+    font-weight: 600;
+    font-size: 40px;
+    margin-bottom: 0.25em;
+  }
+  
+  .@{class-prefix}-alt-title-testimoni {
+    font-size: 18px;
+  }
+}
+
+.@{class-prefix}-app-home-testimoni-box-container {
+  margin: 48px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+}
+
+.@{class-prefix}-app-home-testimoni-box-content {
+  margin: 0 24px;
+  border: solid 1px #F56363;
+  border-radius: 16px;
+  width: 75%;
+  height: 106%;
+  .box-shadow(@gx-card-shadow);
+
+  h2 {
+    text-align: center;
+    font-size: 28px;
+    margin: 1em 0;
+  }
+
+  p {
+    text-align: center;
+    font-size: 18px;
+    padding: 0px 1em;
+    margin-bottom: 0;
+    line-height: 1.4;
+  }
+
+}
+
+.@{class-prefix}-app-home-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FCD2D2;
+  padding: 64px 0;
+}
+
+.@{class-prefix}-app-home-footer-container {
+  display: flex;
+  width: 70%;
+}
+
+.@{class-prefix}-app-home-footer-l {
+  width: 50%;
+  padding-right: 3em;
+
+  img {
+    margin-bottom: 1.25em;
+  }
+  
+  h1 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 1.25em;
+  }
+
+  p {
+    margin-bottom: 0;
+    font-size: 16px;
+  }
+
+}
+
+.@{class-prefix}-app-home-footer-r {
+  padding-left: 8em;
+  width: 50%;
+
+  h1 {
+    margin-top: 2em;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 1.25em;
+  }
+
+  p {
+    margin-bottom: 1.25em;
+    font-size: 16px;
+
+    a {
+      color: #0500FF;
+      text-decoration: underline;
+    }
+  }
+
+}
+
+.@{class-prefix}-app-home-footer-c {
+  display: flex;
+  justify-content: center;
+  background-color: #682828;
+
+  p {
+    color: white;
+    margin: 1.75em 0;
+    font-size: 16px;
+    font-weight: 600;
+  }
 }
