@@ -1,7 +1,6 @@
 package budgetEase.mainapp.controllers;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,7 +44,6 @@ public class UsersController {
     try {
       Users users = new Users();
 
-      users.setId(Long.parseLong(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")).toString()));
       users.setUsername(data.getUsername());
       users.setPassword(data.getPassword());
       users.setEmail(data.getEmail());
@@ -74,7 +72,7 @@ public class UsersController {
 
     try {
 
-      if (param.getId() < 0) {
+      if (param.getId().isEmpty() || param.getId().trim().length() < 1) {
         return ResponseEntity.badRequest().body("ID is required in the request body.");
       }
 

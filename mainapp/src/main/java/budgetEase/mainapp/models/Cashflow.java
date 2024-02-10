@@ -13,27 +13,27 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Data
-@Getter
 @Setter
+@Getter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users")
-public class Users {
+@Table(name = "cashflow")
+public class Cashflow {
 
-    @Id
-    private String id = UUID.randomUUID().toString();
+  @Id
+  private String id = UUID.randomUUID().toString();
 
-    private String username;
+  private String id_users;
 
-    private String password;
+  private String arus;
 
-    private String no_hp;
+  private Long nominal;
 
-    private String email;
+  private String kategori;
 
-    private LocalDateTime created_date;
+  private String keterangan;
 
-    private LocalDateTime last_login;
-
+  private LocalDateTime tanggal;
+  
 }

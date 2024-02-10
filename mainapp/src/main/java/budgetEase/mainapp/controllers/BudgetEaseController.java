@@ -10,7 +10,6 @@ import budgetEase.mainapp.utils.MessageModel;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +47,11 @@ public class BudgetEaseController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
       }
 
+      Users userUpdateLogin = user.get();
+
+      userUpdateLogin.setLast_login(LocalDateTime.now());
+      usersRepo.save(userUpdateLogin);
+
       msg.setMessage("Success");
       msg.setData(user);
 
@@ -77,7 +81,6 @@ public class BudgetEaseController {
 
       Users users = new Users();
 
-      users.setId(Long.parseLong(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")).toString()));
       users.setUsername(data.getUsername());
       users.setPassword(data.getPassword());
       users.setEmail(data.getEmail());
