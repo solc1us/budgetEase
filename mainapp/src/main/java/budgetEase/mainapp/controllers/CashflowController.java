@@ -167,7 +167,7 @@ public class CashflowController {
       List<Cashflow> filteredCashflows = new ArrayList<>(cashflow);
 
       if (arus != null && !arus.isEmpty()) {
-        filteredCashflows.retainAll(budgetEaseService.findByArus(filteredCashflows, arus));
+        filteredCashflows.retainAll(budgetEaseService.findCashflowByArus(filteredCashflows, arus));
       }
 
       if (dateFrom != null) {
@@ -179,11 +179,11 @@ public class CashflowController {
         } else {
           dateToAddTime = dateTo.atTime(LocalTime.MAX);
         }
-        filteredCashflows.retainAll(budgetEaseService.findByDateRange(filteredCashflows, dateFromAddTime, dateToAddTime));
+        filteredCashflows.retainAll(budgetEaseService.findCashflowByDateRange(filteredCashflows, dateFromAddTime, dateToAddTime));
       }
 
       if (kategori != null && !kategori.isEmpty()) {
-        filteredCashflows.retainAll(budgetEaseService.findByKategori(filteredCashflows, kategori));
+        filteredCashflows.retainAll(budgetEaseService.findCashflowByKategori(filteredCashflows, kategori));
       }
 
       msg.setMessage("Sukses");

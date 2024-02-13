@@ -1,6 +1,8 @@
 package budgetEase.mainapp.controllers;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import budgetEase.mainapp.models.ToDoList;
 import budgetEase.mainapp.repos.ToDoListRepo;
+import budgetEase.mainapp.services.BudgetEaseService;
 import budgetEase.mainapp.utils.MessageModel;
 import budgetEase.mainapp.utils.MessageModelPagination;
 import budgetEase.mainapp.utils.SortingAndAscendingDescending;
@@ -35,6 +39,9 @@ public class ToDoListController {
 
   @Autowired
   SortingAndAscendingDescending sortingAndAscendingDescending;
+
+  @Autowired
+  BudgetEaseService budgetEaseService;
 
   @PostMapping("/create")
   public ResponseEntity<Object> insertData(@RequestBody ToDoList data) {
@@ -128,6 +135,58 @@ public class ToDoListController {
     } catch (Exception e) {
       msg.setMessage(e.getMessage());
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
+    }
+  }
+
+  @GetMapping("/find")
+  public ResponseEntity<Object> findCashflow(
+      @RequestParam(value = "idUsers", required = true) String idUsers,
+      @RequestParam(value = "dateFrom", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
+      @RequestParam(value = "dateTo", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo,
+      @RequestParam(value = "isCheck", required = false) Boolean isCheck,
+      @RequestParam(value = "kegiatan", required = false) String kegiatan) {
+
+    MessageModel msg = new MessageModel();
+
+    try {
+
+      if (idUsers.isEmpty() || idUsers.trim().length() < 1 || idUsers.isBlank()) {
+        msg.setMessage("'idUsers' is required in the request param.");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
+      }
+
+      if (dateTo != null && dateFrom == null) {
+        msg.setMessage("'dateFrom' is required if you insert 'dateTo'.");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
+      }
+
+      List<ToDoList> toDoList = toDoListRepo.findByIdUsers(idUsers);
+
+      List<ToDoList> filteredToDoLists = new ArrayList<>(toDoList);
+
+      if (kegiatan != null && !kegiatan.isEmpty()) {
+        filteredToDoLists.retainAll(budgetEaseService.findToDoListByKegiatan(filteredToDoLists, kegiatan));
+      }
+
+      if (isCheck != null) {
+        filteredToDoLists.retainAll(budgetEaseService.findToDoListByIsCheck(filteredToDoLists, isCheck));
+      }
+
+      if (dateFrom != null) {
+
+        if (dateTo == null) {
+          dateTo = dateFrom;
+        }
+
+        filteredToDoLists.retainAll(budgetEaseService.findToDoListByDateRange(filteredToDoLists, dateFrom, dateTo));
+      }
+
+      msg.setMessage("Sukses");
+      msg.setData(filteredToDoLists);
+      return ResponseEntity.ok(msg);
+
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
   }
 
