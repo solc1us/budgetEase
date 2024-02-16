@@ -14,6 +14,7 @@ import Auxiliary from "util/Auxiliary";
 
 import {NAV_STYLE_DRAWER, NAV_STYLE_FIXED, NAV_STYLE_MINI_SIDEBAR, TAB_SIZE} from "../../constants/ThemeSetting";
 import {useDispatch, useSelector} from "react-redux";
+import UserProfile from "../Sidebar/UserProfile";
 
 const {Header} = Layout;
 
@@ -56,12 +57,12 @@ const Topbar = () => {
       <Link to="/" className="gx-d-block gx-d-lg-none gx-pointer">
         <img alt="" src={("/assets/images/w-logo.png")}/></Link>
 
-      <SearchBox styleName="gx-d-none gx-d-lg-block gx-lt-icon-search-bar-lg"
+      {/* <SearchBox styleName="gx-d-none gx-d-lg-block gx-lt-icon-search-bar-lg"
                  placeholder="Search in app..."
                  onChange={updateSearchChatUser}
-                 value={searchText}/>
+                 value={searchText}/> */}
       <ul className="gx-header-notifications gx-ml-auto">
-        <li className="gx-notify gx-notify-search gx-d-inline-block gx-d-lg-none">
+        {/* <li className="gx-notify gx-notify-search gx-d-inline-block gx-d-lg-none">
           <Popover overlayClassName="gx-popover-horizantal" placement="bottomRight" content={
             <SearchBox styleName="gx-popover-search-bar"
                        placeholder="Search in app..."
@@ -70,8 +71,8 @@ const Topbar = () => {
           } trigger="click">
             <span className="gx-pointer gx-d-block"><i className="icon icon-search-new"/></span>
           </Popover>
-        </li>
-        {width >= TAB_SIZE ? null :
+        </li> */}
+        {/* {width >= TAB_SIZE ? null :
           <Auxiliary>
             <li className="gx-notify">
               <Popover overlayClassName="gx-popover-horizantal" placement="bottomRight" content={<AppNotification/>}
@@ -90,16 +91,9 @@ const Topbar = () => {
               </Popover>
             </li>
           </Auxiliary>
-        }
+        } */}
         <li className="gx-language">
-          <Popover overlayClassName="gx-popover-horizantal" placement="bottomRight" content={languageMenu()}
-                   trigger="click">
-                <span className="gx-pointer gx-flex-row gx-align-items-center">
-                  <i className={`flag flag-24 flag-${locale.icon}`}/>
-                  <span className="gx-pl-2 gx-language-name">{locale.name}</span>
-                  <i className="icon icon-chevron-down gx-pl-2"/>
-                </span>
-          </Popover>
+          <UserProfile/>
         </li>
         {width >= TAB_SIZE ? null :
           <Auxiliary>
