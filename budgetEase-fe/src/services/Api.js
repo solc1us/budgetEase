@@ -2,7 +2,7 @@
 import apisauce from "apisauce";
 import config from "../util/config";
 import { notification, Modal, Row, Col } from "antd";
-import { ExclamationCircleFilled } from "@ant-design/icons";
+import { CheckCircleFilled, ExclamationCircleFilled } from "@ant-design/icons";
 import { store } from "../NextApp";
 import AuthActions from "../appRedux/reducers/AuthRedux";
 // our "constructor"
@@ -70,6 +70,37 @@ const create = (baseURL = config.BASE_URL) => {
         return;
       }
     }
+
+    // if (response.config.url === "main/register") {
+    //   console.log("response", response)
+    //   if (response.ok && response.data) {
+    //     Modal.success({
+    //       centered: true,
+    //       icon: <CheckCircleFilled />,
+    //       okType: "Pemberitahuan !",
+    //       content: (
+    //         <div className="gx-text-dark">
+    //           <p>{response.data.message}</p>
+    //         </div>
+    //       ),
+    //       title: (
+    //         <Row
+    //           type="flex"
+    //           justify="start"
+    //           style={{ alignItems: "center" }}
+    //           gutter={[5, 0]}
+    //         >
+    //           <Col>
+    //             <span>Berhasil !</span>
+    //           </Col>
+    //         </Row>
+    //       ),
+    //       onOk() {},
+    //       onCancel() {},
+    //     });
+    //     return;
+    //   }
+    // }
 
     if (!response.ok && response.data) {
       Modal.error({

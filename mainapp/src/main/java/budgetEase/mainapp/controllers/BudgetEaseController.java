@@ -52,7 +52,7 @@ public class BudgetEaseController {
       userUpdateLogin.setLast_login(LocalDateTime.now());
       usersRepo.save(userUpdateLogin);
 
-      msg.setMessage("Success");
+      msg.setMessage("Anda berhasil login!");
       msg.setData(user);
 
       return ResponseEntity.status(HttpStatus.OK).body(msg);
@@ -89,7 +89,7 @@ public class BudgetEaseController {
 
       usersRepo.save(users);
 
-      msg.setMessage("Success");
+      msg.setMessage("Anda berhasil mendaftar!");
       msg.setData(users);
 
       return ResponseEntity.status(HttpStatus.OK).body(msg);

@@ -8,8 +8,6 @@ const { Types, Creators } = createActions({
   registerUserSuccess: ["payload"],
   loginUserRequest: ["user"],
   loginUserSuccess: ["user"],
-  registerUserRequest: ["user", "history"],
-  registerUserSuccess: ["payload"],
   signinUser: ["user", "history"],
   signinUserSuccess: ["payload"],
   showAuthMessage: ["message"],
@@ -62,13 +60,13 @@ export const INITIAL_STATE = Immutable({
 
 export const AuthSelectors = {
   getData: (state) => state.data,
-  getLoginUserData : (state) => state.loginUserData,
+  getLoginUserData: (state) => state.loginUserData,
 };
 
 /* ------------- Reducers ------------- */
 
 // request the data from an api
-export const registerUserRequest = (state, { user }) => 
+export const registerUserRequest = (state, { user }) =>
   state.merge({ loader: true, user });
 
 export const registerUserSuccess = (state, action) => {
@@ -79,14 +77,14 @@ export const registerUserSuccess = (state, action) => {
     error: null,
     remaining_attempt: -1,
   });
-}
+};
 
 // request the data from an api
 export const loginUser = (state, { user }) =>
   state.merge({ loader: true, user });
 
 // successful api lookup
-export const loginUserSuccess = (state, {user}) => {
+export const loginUserSuccess = (state, { user }) => {
   return state.merge({ loader: false, authUser: user });
 };
 

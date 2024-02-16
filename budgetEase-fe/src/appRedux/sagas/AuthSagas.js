@@ -1,11 +1,14 @@
 import { call, put } from "redux-saga/effects";
 import AuthActions from "../reducers/AuthRedux";
 
+import { push } from 'connected-react-router';
+
 import LoadingOverlayActions from "../reducers/LoadingOverlayRedux";
 
 import { CheckCircleFilled, ExclamationCircleFilled } from "@ant-design/icons";
 import { Modal, Row, Col } from "antd";
 import moment from "moment";
+import { useHistory } from "react-router-dom";
 // import { auth } from "../../firebase/firebase";
 // import { TemplateSelectors } from '../Redux/TemplateRedux'
 
@@ -20,6 +23,7 @@ import moment from "moment";
 //     .signOut()
 //     .then((authUser) => authUser)
 //     .catch((error) => error);
+
 function delay() {
   return new Promise((resolve) => setTimeout(resolve, 2000));
 }
@@ -29,9 +33,9 @@ export function* signinUser(api, action) {
   // console.log("USER TERPASSINFG ???", user);
   const { username, password } = user;
 
-  const dummyData = {name: 'test'}
-  localStorage.setItem("user_credent",JSON.stringify(dummyData))
-  yield put(AuthActions.signinUserSuccess(dummyData))
+  const dummyData = { name: "test" };
+  localStorage.setItem("user_credent", JSON.stringify(dummyData));
+  yield put(AuthActions.signinUserSuccess(dummyData));
 
   try {
     const signInUserResponse = yield call(api.authRequest, {
@@ -43,9 +47,7 @@ export function* signinUser(api, action) {
     // // console.log("signin true ?", signInUserResponse.ok);
 
     if (signInUserResponse.ok === true) {
-      yield put(
-        AuthActions.signinSuccess(signInUserResponse.data.data)
-      );
+      yield put(AuthActions.signinSuccess(signInUserResponse.data.data));
       localStorage.setItem(
         "user_credent",
         JSON.stringify(signInUserResponse.data.data)
@@ -54,13 +56,12 @@ export function* signinUser(api, action) {
       history.push("/");
     } else if (signInUserResponse.ok === false) {
       console.log(signInUserResponse.data.data.message + "asdasd");
-      console.log("asdas")
-      history.push("main/login")
+      console.log("asdas");
+      history.push("main/login");
     }
   } catch (error) {
     console.log(error);
   }
-  
 }
 
 export function* registerUserRequest(api, action) {
@@ -77,9 +78,10 @@ export function* registerUserRequest(api, action) {
 
     if (responses.ok === true) {
       // // console.log("e dari server register ", responses);
+      console.log("response", responses);
 
       yield put(AuthActions.registerUserSuccess(responses.data.data));
-      history.push("/sigin")
+
       Modal.success({
         centered: true,
         icon: <CheckCircleFilled />,
@@ -104,11 +106,15 @@ export function* registerUserRequest(api, action) {
         onOk() {},
         onCancel() {},
       });
+
+      yield put(AuthActions.showAuthLoader(false));
+      yield put(push('/signin'));
     } else {
       yield put(AuthActions.showAuthLoader(false));
     }
   } catch (error) {
-    // console.log(error);
+    console.log(error);
+    yield put(AuthActions.showAuthMessage(error));
   }
 }
 
@@ -142,7 +148,6 @@ export function* loginUserRequest(api, action) {
   } catch (error) {
     yield put(AuthActions.showAuthMessage(error));
   }
-  
 }
 
 export function* userSignOut(api, action) {
