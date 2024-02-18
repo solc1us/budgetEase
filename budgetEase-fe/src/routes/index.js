@@ -3,19 +3,19 @@ import {Route, Switch} from "react-router-dom";
 import asyncComponent from "util/asyncComponent";
 
 const App = ({  match}) => {
-  const [loading, setLoading] = useState(true);
-  const storedUserData = JSON.parse(localStorage.getItem("user_credent"));
+  // const [loading, setLoading] = useState(true);
+  // const storedUserData = JSON.parse(localStorage.getItem("user_credent"));
 
-  // Ambil data pengguna dari localStorage saat komponen pertama kali dimuat
-  useEffect(() => {
-    const fetchData = () => {
-      setLoading(false);
-    };
+  // // Ambil data pengguna dari localStorage saat komponen pertama kali dimuat
+  // useEffect(() => {
+  //   const fetchData = () => {
+  //     setLoading(false);
+  //   };
 
-    fetchData();
-  }, []); 
+  //   fetchData();
+  // }, []); 
 
-  console.log(storedUserData, "ini dari index di route utama storedUserData")
+  // console.log(storedUserData, "ini dari index di route utama storedUserData")
 
   return (
 
@@ -23,7 +23,9 @@ const App = ({  match}) => {
     <Switch>
       <Route path={`${match.url}create`} component={asyncComponent(() => import('./CreatePage'))}/>
       <Route path={`${match.url}sample`} component={asyncComponent(() => import('./SamplePage'))}/>
+      <Route path={`${match.url}bubble`} component={asyncComponent(() => import('./BubblePage'))}/>
       <Route path={`${match.url}test`} component={asyncComponent(() => import('./TestPage'))}/>
+      <Route path={`${match.url}investment`} component={asyncComponent(() => import('./InvestmentPage'))}/>
     </Switch>
   </div>
   )

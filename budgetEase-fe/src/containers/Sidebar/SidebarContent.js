@@ -58,6 +58,16 @@ const SidebarContent = ({sidebarCollapsed, setSidebarCollapsed}) => {
                 <span>Test Pages</span>
               </Link>
             </Menu.Item>
+            <Menu.Item key="bubble">
+              <Link to="/bubble"><i className="icon icon-widgets"/>
+                <span>Bubble Pages</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="investment">
+              <Link to="/investment"><i className="icon icon-widgets"/>
+                <span>Investment Calculator</span>
+              </Link>
+            </Menu.Item>
 
           </Menu>
         </CustomScrollbars>
