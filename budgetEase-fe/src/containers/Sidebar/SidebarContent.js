@@ -4,14 +4,11 @@ import {Link} from "react-router-dom";
 
 import CustomScrollbars from "util/CustomScrollbars";
 import SidebarLogo from "./SidebarLogo";
-import UserProfile from "./UserProfile";
-import AppsNavigation from "./AppsNavigation";
 import {
   NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR,
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
   THEME_TYPE_LITE
 } from "../../constants/ThemeSetting";
-import IntlMessages from "../../util/IntlMessages";
 import {useSelector} from "react-redux";
 
 const SidebarContent = ({sidebarCollapsed, setSidebarCollapsed}) => {
@@ -43,24 +40,24 @@ const SidebarContent = ({sidebarCollapsed, setSidebarCollapsed}) => {
             theme={themeType === THEME_TYPE_LITE ? 'lite' : 'dark'}
             mode="inline">
 
-            <Menu.Item key="create">
-              <Link to="/create"><i className="icon icon-widgets"/>
-                <span>Create Pages</span>
+            <Menu.Item key="dashboard">
+              <Link to="/dashboard"><i className="icon icon-widgets"/>
+                <span>Dashboard</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="sample">
-              <Link to="/sample"><i className="icon icon-widgets"/>
-                <span>Sample Pages</span>
+            <Menu.Item key="cashflow">
+              <Link to="/cashflow"><i className="icon icon-widgets"/>
+                <span>Cashflow</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="test">
-              <Link to="/test"><i className="icon icon-widgets"/>
-                <span>Test Pages</span>
+            <Menu.Item key="report">
+              <Link to="/report"><i className="icon icon-widgets"/>
+                <span>Report</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="bubble">
-              <Link to="/bubble"><i className="icon icon-widgets"/>
-                <span>Bubble Pages</span>
+            <Menu.Item key="todolist">
+              <Link to="/todolist"><i className="icon icon-widgets"/>
+                <span>To-do List</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="investment">

@@ -1,15 +1,14 @@
-import styles from './ResultsTable.module.css'
-
-const formatter = new Intl.NumberFormat('en-US', {
+const formatter = new Intl.NumberFormat('en-ID', {
   style: 'currency',
-  currency: 'USD',
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
+  currency: 'IDR',
+  currencyDisplay: 'narrowSymbol',
+  maximumFractionDigits: 0,
+   
 })
 
 function ResultsTable(props) {
   return (
-    <table className={styles.result}>
+    <table className="result">
       <thead>
         <tr>
           <th>Year</th>
@@ -23,16 +22,16 @@ function ResultsTable(props) {
         {props.data.map((yearData) => (
           <tr key={yearData.year}>
             <td>{yearData.year}</td>
-            <td>{formatter.format(yearData.savingsEndOfYear)}</td>
-            <td>{formatter.format(yearData.yearlyInterest)}</td>
+            <td>{formatter.format(yearData.savingsEndOfYear).replace(",", ".")}</td>
+            <td>{formatter.format(yearData.yearlyInterest).replace(",", ".")}</td>
             <td>
               {formatter.format(yearData.savingsEndOfYear -
                 props.initialInvestment -
-                yearData.yearlyContribution * yearData.year)}
+                yearData.yearlyContribution * yearData.year).replace(",", ".")}
             </td>
             <td>
               {formatter.format(props.initialInvestment +
-                yearData.yearlyContribution * yearData.year)}
+                yearData.yearlyContribution * yearData.year).replace(",", ".")}
             </td>
           </tr>
         ))}

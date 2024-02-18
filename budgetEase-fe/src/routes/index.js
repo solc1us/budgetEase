@@ -21,10 +21,10 @@ const App = ({  match}) => {
 
     <div className="gx-main-content-wrapper">
     <Switch>
-      <Route path={`${match.url}create`} component={asyncComponent(() => import('./CreatePage'))}/>
-      <Route path={`${match.url}sample`} component={asyncComponent(() => import('./SamplePage'))}/>
-      <Route path={`${match.url}bubble`} component={asyncComponent(() => import('./BubblePage'))}/>
-      <Route path={`${match.url}test`} component={asyncComponent(() => import('./TestPage'))}/>
+      <Route path={`${match.url}dashboard`} component={asyncComponent(() => import('./DashboardPage'))}/>
+      <Route path={`${match.url}cashflow`} component={asyncComponent(() => import('./CashflowPage'))}/>
+      <Route path={`${match.url}report`} component={asyncComponent(() => import('./ReportPage'))}/>
+      <Route path={`${match.url}todolist`} component={asyncComponent(() => import('./ToDoListPage'))}/>
       <Route path={`${match.url}investment`} component={asyncComponent(() => import('./InvestmentPage'))}/>
     </Switch>
   </div>
