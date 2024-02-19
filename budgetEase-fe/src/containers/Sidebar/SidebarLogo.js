@@ -33,7 +33,7 @@ const SidebarLogo = ({sidebarCollapsed, setSidebarCollapsed}) => {
           <img alt="lo" src={("/assets/images/w-logo.png")}/> :
           themeType === THEME_TYPE_LITE ?
             <img alt="logo1" src={("/assets/images/logo-white.png")}/> :
-            <img alt="logo2" src={("/assets/images/logo.png")}/>}
+            <img alt="logo2" src={("/assets/images/budgetEase-logo-main2.png")}/>}
       </Link>
     </div>
   );

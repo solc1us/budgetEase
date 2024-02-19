@@ -1,21 +1,30 @@
 import React from "react";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import IntlMessages from "util/IntlMessages";
-import Button from "../../components/Button";
+import { Form, Input, Button } from "antd";
 
 const SamplePage = () => {
   return (
     <div>
       <h1 className="gx-main-user-main-title">To-do List</h1>
       <div className="gx-main-user-container gx-rounded-lg">
-        <p>tes</p>
-        <Button>tes</Button>
-        <p>tes</p>
-        <h2>to do list</h2>
-        <h2>to do list</h2>
-        <h2>to do list</h2>
-        <p>tes</p>
-        <Button>tes</Button>
+        <div className="">
+          <Form layout="inline">
+            <Form.Item>
+              <Input placeholder="Search" />
+            </Form.Item>
+            <Form.Item>
+              <Button
+                className="gx-mb-0 gx-w-100"
+                htmlType="submit"
+              >
+                <img src="/assets/icons/search.svg" width="16" height="16" />
+              </Button>
+            </Form.Item>
+          </Form>
+        </div>
       </div>
     </div>
   );
