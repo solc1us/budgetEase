@@ -5,7 +5,7 @@ const BASE_URL = "http://localhost:8080/"; //'https://my-json-server.typicode.co
 const SAMPLE_API_URL = "http://8.215.32.207/testprovider/"; //'https://my-json-server.typicode.com/';
 
 module.exports = {
-  footerText: "Copyright Company Name © 2022",
+  footerText: "© 2024 budgetEase - PT Gemilang Keuangan Indonesia. All Rights Reserved.",
   BASE_URL,
   SAMPLE_API_URL,
   IS_SESSION_TIMEOUT_ACTIVE: false,

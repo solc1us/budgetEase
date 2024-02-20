@@ -1,4 +1,4 @@
-import FormInput from "./FormInput/FormInput";
+import FormInputInvest from "./FormInputInvest/FormInputInvest";
 import ResultsTable from "./ResultsTable/ResultsTable";
 import { useState } from "react";
 import React from "react";
@@ -39,7 +39,7 @@ const SamplePage = () => {
     <div>
       <h1 className="gx-main-user-main-title">Investment Calculator</h1>
       <div className="gx-main-user-container gx-rounded-lg">
-        <FormInput onCalculate={calculateHandler} />
+        <FormInputInvest onCalculate={calculateHandler} />
 
         {/* Todo: Show below table conditionally (only once result data is available) */}
         {/* Show fallback text if no data is available */}

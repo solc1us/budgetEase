@@ -7,7 +7,7 @@ const initialUserInput = {
   duration: 10
 }
 
-function FormInput(props) {
+function FormInputInvest(props) {
 
   // const [enteredCurrentSavings, setEnteredCurrentSavings] = useState("");
   // const [enteredYearlyContribution, setEnteredYearlyContribution] = useState("");
@@ -117,4 +117,4 @@ function FormInput(props) {
   );
 }
 
-export default FormInput;
+export default FormInputInvest;

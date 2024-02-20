@@ -23,8 +23,10 @@ const App = ({  match}) => {
     <Switch>
       <Route path={`${match.url}dashboard`} component={asyncComponent(() => import('./DashboardPage'))}/>
       <Route path={`${match.url}cashflow`} component={asyncComponent(() => import('./CashflowPage'))}/>
+      <Route path={`${match.url}cashflow-newcashflow`} component={asyncComponent(() => import('./CashflowPage/FormInputCashflowPage'))}/>
       <Route path={`${match.url}report`} component={asyncComponent(() => import('./ReportPage'))}/>
       <Route path={`${match.url}todolist`} component={asyncComponent(() => import('./ToDoListPage'))}/>
+      <Route path={`${match.url}todolist-newtodolist`} component={asyncComponent(() => import('./ToDoListPage/FormInputToDoPage'))}/>
       <Route path={`${match.url}investment`} component={asyncComponent(() => import('./InvestmentPage'))}/>
     </Switch>
   </div>
