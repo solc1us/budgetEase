@@ -92,10 +92,20 @@ const SamplePage = () => {
         </div>
         <div className="gx-flex-column gx-px-3">
           <Form onFinish={onFinish} onFinishFailed={onFinishFailed}>
-            <Form.Item name="date" label="Tanggal & Deadline">
+            <Form.Item
+              rules={[{ required: true, message: "Input tanggal dan deadline!" }]}
+              name="date"
+              label="Tanggal & Deadline"
+            >
               <RangePicker onChange={onChangeDate} />
             </Form.Item>
-            <Form.Item name="kegiatan" label="Kegiatan">
+            <Form.Item
+              rules={[
+                { required: true, message: "Input kegiatan anda!" },
+              ]}
+              name="kegiatan"
+              label="Kegiatan"
+            >
               <Input placeholder="Kegiatan" />
             </Form.Item>
             <Form.Item>

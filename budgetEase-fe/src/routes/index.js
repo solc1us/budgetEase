@@ -27,6 +27,7 @@ const App = ({  match}) => {
       <Route path={`${match.url}report`} component={asyncComponent(() => import('./ReportPage'))}/>
       <Route path={`${match.url}todolist`} component={asyncComponent(() => import('./ToDoListPage'))}/>
       <Route path={`${match.url}todolist-newtodolist`} component={asyncComponent(() => import('./ToDoListPage/FormInputToDoPage'))}/>
+      <Route path={`${match.url}todolist-edit/:id`} component={asyncComponent(() => import('./ToDoListPage/ToDoListEditPage'))}/>
       <Route path={`${match.url}investment`} component={asyncComponent(() => import('./InvestmentPage'))}/>
     </Switch>
   </div>

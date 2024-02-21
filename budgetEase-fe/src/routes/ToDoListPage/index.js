@@ -1,11 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import axios from "axios";
 
 import IntlMessages from "util/IntlMessages";
-import { Form, Input, Button, Radio, Table, Switch, Space } from "antd";
+import {
+  Form,
+  Input,
+  Button,
+  Modal,
+  Table,
+  Switch,
+  Space,
+  Checkbox,
+  Row,
+  Col,
+} from "antd";
 
-import {Link} from "react-router-dom";
+import { CheckCircleFilled, ExclamationCircleFilled } from "@ant-design/icons";
+
+import { Link, useNavigate, useHistory } from "react-router-dom";
+
+// const toDoListData = [tanggal, deadline, check, kegiatan];
 
 const SamplePage = () => {
   const user_credent = localStorage.getItem("user_credent")
@@ -15,6 +30,30 @@ const SamplePage = () => {
   const onChangeSwitch = (e) => {
     // console.log(`switch to ${e}`);
   };
+
+  const history = useHistory();
+
+  const [toDoList, setToDoList] = useState([]);
+
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: "http://localhost:8080/todolist/find",
+      params: {
+        idUsers: user_credent.id,
+      },
+    })
+      .then(function (response) {
+        console.log("dari useEffect", response.data.data);
+        setToDoList(response.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        // always executed
+      });
+  }, []);
 
   const onFinishFailed = (errorInfo) => {};
 
@@ -34,6 +73,7 @@ const SamplePage = () => {
     })
       .then(function (response) {
         console.log(response);
+        setToDoList(response.data.data);
       })
       .catch(function (error) {
         console.log(error);
@@ -43,6 +83,150 @@ const SamplePage = () => {
       });
 
     // dispatch(AuthActions.loginUserRequest(values));
+  };
+
+  const onClickButtonTest = () => {
+    console.log(toDoList);
+  };
+
+  const tableData = toDoList.map((item, index) => {
+    return { key: item.id, no: index + 1, ...item };
+  });
+
+  const columns = [
+    {
+      title: "No",
+      dataIndex: "no",
+      key: "no",
+    },
+    {
+      title: "Tanggal",
+      dataIndex: "tanggal",
+      key: "tanggal",
+    },
+    {
+      title: "Deadline",
+      dataIndex: "deadline",
+      key: "deadline",
+    },
+    {
+      title: "Check",
+      dataIndex: "check",
+      key: "check",
+      render: (check) => (
+        <span style={{ color: check ? "green" : "red" }}>
+          {check ? "True" : "False"}
+        </span>
+      ),
+    },
+    {
+      title: "Kegiatan",
+      dataIndex: "kegiatan",
+      key: "kegiatan",
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Space size="middle">
+          <a onClick={() => onClickEditButton(record.id)}>
+            <img src="assets\icons\pencil-square.svg" />
+          </a>
+          <a onClick={() => onClickDeleteButton(record.id)}>
+            <img src="assets\icons\trash-fill.svg" />
+          </a>
+        </Space>
+      ),
+    },
+  ];
+
+  const onClickDeleteButton = (id) => {
+    Modal.warning({
+      centered: true,
+      icon: <ExclamationCircleFilled />,
+      okType: "danger",
+      okCancel: "danger",
+      content: (
+        <div>
+          <p>Apakah anda yakin?</p>
+        </div>
+      ),
+      title: (
+        <Row
+          type="flex"
+          justify="start"
+          style={{ alignItems: "center" }}
+          gutter={[5, 0]}
+        >
+          <Col>
+            <span>Warnings !</span>
+          </Col>
+        </Row>
+      ),
+      onOk() {
+        axios({
+          method: "DELETE",
+          url: `http://localhost:8080/todolist/deletebyid/${id}`
+        })
+          .then((response) => {
+            console.log(response);
+            history.push('/todolist');
+
+            Modal.success({
+              centered: true,
+              icon: <CheckCircleFilled />,
+              okType: "Pemberitahuan !",
+              content: (
+                <div className="gx-text-dark">
+                  <p>{response.data.message}</p>
+                </div>
+              ),
+              title: (
+                <Row
+                  type="flex"
+                  justify="start"
+                  style={{ alignItems: "center" }}
+                  gutter={[5, 0]}
+                >
+                  <Col>
+                    <span>Berhasil!</span>
+                  </Col>
+                </Row>
+              ),
+              onOk() {},
+              onCancel() {},
+            });
+            
+            // Jika berhasil, atur data
+          })
+          .catch((error) => {
+            // Jika terjadi kesalahan, atur pesan kesalahan dan/atau redirect ke halaman lain
+            // setError("Data tidak ditemukan");
+            console.log(error);
+            // navigate("/"); // Ganti dengan URL halaman lain jika diperlukan
+          });
+      },
+      onCancel() {},
+    });
+  };
+
+  const onClickEditButton = (id) => {
+    console.log("Edit button clicked for id:", id);
+    axios
+      // .get(`https://edc-api.loginusa.id/edcservice/receipt/findbyid/${id}`)
+      .get(`http://localhost:8080/todolist/findbyid/${id}`)
+      .then((response) => {
+        console.log(response);
+        history.push(`/todolist-edit/${id}`);
+
+        // Jika berhasil, atur data
+      })
+      .catch((error) => {
+        // Jika terjadi kesalahan, atur pesan kesalahan dan/atau redirect ke halaman lain
+        // setError("Data tidak ditemukan");
+        console.log(error);
+        // navigate("/"); // Ganti dengan URL halaman lain jika diperlukan
+      });
   };
 
   return (
@@ -80,7 +264,10 @@ const SamplePage = () => {
           </Link>
         </div>
         <div className="gx-main-user-table">
-          <Table></Table>
+          <Table dataSource={tableData} columns={columns}></Table>
+          <Button onClick={onClickButtonTest}>
+            Button testing utk console log
+          </Button>
         </div>
       </div>
     </div>

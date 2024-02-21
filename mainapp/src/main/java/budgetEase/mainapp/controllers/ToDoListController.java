@@ -14,8 +14,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -73,6 +75,7 @@ public class ToDoListController {
     }
   }
 
+  @CrossOrigin
   @PutMapping("/update")
   public ResponseEntity<Object> updateBatch(@RequestBody ToDoList param) {
 
@@ -139,7 +142,7 @@ public class ToDoListController {
   }
 
   @GetMapping("/find")
-  public ResponseEntity<Object> findCashflow(
+  public ResponseEntity<Object> findToDoList(
       @RequestParam(value = "idUsers", required = true) String idUsers,
       @RequestParam(value = "dateFrom", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
       @RequestParam(value = "dateTo", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo,
@@ -190,10 +193,65 @@ public class ToDoListController {
     }
   }
 
+  @GetMapping("/findbyid/{id}")
+  public ResponseEntity<Object> findToDoListById(
+      @PathVariable("id") String id) {
+
+    MessageModel msg = new MessageModel();
+
+    try {
+
+      if (id.isEmpty() || id == null) {
+        msg.setMessage("'id' is required in the request param.");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
+      }
+
+      Optional<ToDoList> toDoList = toDoListRepo.findById(id);
+
+      if (!toDoList.isPresent() || toDoList == null) {
+        msg.setMessage("'id' yang anda masukkan salah (tidak ada di database).");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
+      }
+
+      msg.setMessage("Sukses");
+      msg.setData(toDoList);
+      return ResponseEntity.ok(msg);
+
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
+  }
+
   @DeleteMapping("/deletebatch")
   public ResponseEntity<Object> deleteItems(@RequestBody List<ToDoList> id) {
     toDoListRepo.deleteAll(id);
     return ResponseEntity.status(HttpStatus.OK).body("Semua item berhasil dihapus");
+  }
+
+  @DeleteMapping("/deletebyid/{id}")
+  public ResponseEntity<Object> deleteById(@PathVariable("id") String id) {
+
+    MessageModel msg = new MessageModel();
+
+    try {
+
+      Optional<ToDoList> toDoList = toDoListRepo.findById(id);
+
+      if (toDoList.isPresent()) {
+
+        toDoListRepo.deleteById(id);
+
+        msg.setMessage("Berhasil menghapus yang kegiatannya: " + toDoList.get().getKegiatan());
+        msg.setData(toDoList);
+        return ResponseEntity.status(HttpStatus.OK).body(msg);
+      } else {
+        msg.setMessage("Tidak dapat menemukan toDoList dengan id: " + id);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
+      }
+
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
   }
 
 }
