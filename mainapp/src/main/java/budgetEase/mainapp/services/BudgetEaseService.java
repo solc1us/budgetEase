@@ -80,10 +80,10 @@ public class BudgetEaseService {
     return filteredCashflows;
   }
 
-  public List<Cashflow> findCashflowByDateRange(List<Cashflow> cashflows, LocalDateTime dateFrom, LocalDateTime dateTo) {
+  public List<Cashflow> findCashflowByDateRange(List<Cashflow> cashflows, LocalDate dateFrom, LocalDate dateTo) {
     List<Cashflow> filteredCashflows = new ArrayList<>();
     for (Cashflow cashflow : cashflows) {
-      if (cashflow.getTanggal().isAfter(dateFrom) && cashflow.getTanggal().isBefore(dateTo)) {
+      if (cashflow.getTanggal().isAfter(dateFrom.minusDays(1)) && cashflow.getTanggal().isBefore(dateTo.plusDays(1))) {
         filteredCashflows.add(cashflow);
       }
     }

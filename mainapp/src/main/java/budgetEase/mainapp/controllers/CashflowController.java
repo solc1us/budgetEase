@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import budgetEase.mainapp.models.Cashflow;
+import budgetEase.mainapp.models.ToDoList;
 import budgetEase.mainapp.repos.CashflowRepo;
 import budgetEase.mainapp.services.BudgetEaseService;
 import budgetEase.mainapp.utils.MessageModel;
@@ -58,6 +62,7 @@ public class CashflowController {
       cashflow.setKategori(data.getKategori());
       cashflow.setKeterangan(data.getKeterangan());
       cashflow.setTanggal(data.getTanggal());
+      cashflow.setDate_created(LocalDateTime.now());
 
       cashflowRepo.save(cashflow);
 
@@ -171,23 +176,51 @@ public class CashflowController {
       }
 
       if (dateFrom != null) {
-        LocalDateTime dateFromAddTime = dateFrom.atTime(LocalTime.MIN);
-        LocalDateTime dateToAddTime;
 
         if (dateTo == null) {
-          dateToAddTime = dateFrom.atTime(LocalTime.MAX);
-        } else {
-          dateToAddTime = dateTo.atTime(LocalTime.MAX);
+          dateTo = dateFrom;
         }
-        filteredCashflows.retainAll(budgetEaseService.findCashflowByDateRange(filteredCashflows, dateFromAddTime, dateToAddTime));
+
+        filteredCashflows.retainAll(budgetEaseService.findCashflowByDateRange(filteredCashflows, dateFrom, dateTo));
       }
 
       if (kategori != null && !kategori.isEmpty()) {
         filteredCashflows.retainAll(budgetEaseService.findCashflowByKategori(filteredCashflows, kategori));
       }
 
+      Collections.sort(filteredCashflows, Comparator.comparing(Cashflow::getTanggal).reversed());
+
       msg.setMessage("Sukses");
       msg.setData(filteredCashflows);
+      return ResponseEntity.ok(msg);
+
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
+  }
+
+  @GetMapping("/findbyid/{id}")
+  public ResponseEntity<Object> findCashflowById(
+      @PathVariable("id") String id) {
+
+    MessageModel msg = new MessageModel();
+
+    try {
+
+      if (id.isEmpty() || id == null) {
+        msg.setMessage("'id' is required in the request param.");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
+      }
+
+      Optional<Cashflow> cashflow = cashflowRepo.findById(id);
+
+      if (!cashflow.isPresent() || cashflow == null) {
+        msg.setMessage("'id' yang anda masukkan salah (tidak ada di database).");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
+      }
+
+      msg.setMessage("Sukses");
+      msg.setData(cashflow);
       return ResponseEntity.ok(msg);
 
     } catch (Exception e) {
@@ -199,6 +232,32 @@ public class CashflowController {
   public ResponseEntity<Object> deleteItems(@RequestBody List<Cashflow> id) {
     cashflowRepo.deleteAll(id);
     return ResponseEntity.status(HttpStatus.OK).body("Semua item berhasil dihapus");
+  }
+
+  @DeleteMapping("/deletebyid/{id}")
+  public ResponseEntity<Object> deleteById(@PathVariable("id") String id) {
+
+    MessageModel msg = new MessageModel();
+
+    try {
+
+      Optional<Cashflow> cashflow = cashflowRepo.findById(id);
+
+      if (cashflow.isPresent()) {
+
+        cashflowRepo.deleteById(id);
+
+        msg.setMessage("Berhasil menghapus yang keterangannya: " + cashflow.get().getKeterangan());
+        msg.setData(cashflow);
+        return ResponseEntity.status(HttpStatus.OK).body(msg);
+      } else {
+        msg.setMessage("Tidak dapat menemukan cashflow dengan id: " + id);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
+      }
+
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
   }
 
 }

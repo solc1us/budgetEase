@@ -1,5 +1,6 @@
 package budgetEase.mainapp.models;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -34,6 +35,8 @@ public class Cashflow {
 
   private String keterangan;
 
-  private LocalDateTime tanggal;
+  private LocalDate tanggal;
+
+  private LocalDateTime date_created;
   
 }

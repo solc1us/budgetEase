@@ -24,6 +24,7 @@ const App = ({  match}) => {
       <Route path={`${match.url}dashboard`} component={asyncComponent(() => import('./DashboardPage'))}/>
       <Route path={`${match.url}cashflow`} component={asyncComponent(() => import('./CashflowPage'))}/>
       <Route path={`${match.url}cashflow-newcashflow`} component={asyncComponent(() => import('./CashflowPage/FormInputCashflowPage'))}/>
+      <Route path={`${match.url}cashflow-edit/:id`} component={asyncComponent(() => import('./CashflowPage/CashflowEditPage'))}/>
       <Route path={`${match.url}report`} component={asyncComponent(() => import('./ReportPage'))}/>
       <Route path={`${match.url}todolist`} component={asyncComponent(() => import('./ToDoListPage'))}/>
       <Route path={`${match.url}todolist-newtodolist`} component={asyncComponent(() => import('./ToDoListPage/FormInputToDoPage'))}/>

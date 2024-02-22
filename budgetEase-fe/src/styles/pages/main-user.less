@@ -9,7 +9,43 @@
 .@{class-prefix}-main-user-container {
   padding: 2rem;
   margin-bottom: 2.5em;
-  .box-shadow(0px 0px 16px 0px rgba(0, 0, 0, 0.10));
+  background-color: #F6F6F6;
+  .box-shadow(0px 0px 16px 0px rgba(0, 0, 0, 0.1));
+}
+
+.@{class-prefix}-dashboard-flex {
+  display: flex;
+  justify-content: space-around;
+}
+
+.@{class-prefix}-dashboard-boxed-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 3rem;
+  margin-bottom: 2.5em;
+  background-color: #ffffff;
+
+  p {
+    margin-bottom: 0;
+    padding: 1em 2em;
+    border-radius: 4px;
+    color: black;
+  }
+
+  .income {
+    background-color: #A7CC95
+  }
+
+  .diff {
+    background-color: #789efe;
+  }
+  
+  .outcome {
+    background-color: #F56363;
+  }
+
+  .box-shadow(0px 0px 16px 0px rgba(0, 0, 0, 0.1));
 }
 
 .@{class-prefix}-main-user-table-filter {

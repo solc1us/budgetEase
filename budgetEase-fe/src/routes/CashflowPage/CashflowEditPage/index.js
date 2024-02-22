@@ -5,7 +5,17 @@ import { useHistory, useParams } from "react-router-dom";
 import axios from "axios";
 
 import { CheckCircleFilled, ExclamationCircleFilled } from "@ant-design/icons";
-import { Form, Input, Button, DatePicker, Modal, Row, Col, Switch } from "antd";
+import {
+  Form,
+  Input,
+  Button,
+  DatePicker,
+  Modal,
+  Row,
+  Col,
+  Switch,
+  InputNumber,
+} from "antd";
 
 import moment from "moment";
 
@@ -27,28 +37,13 @@ const SamplePage = () => {
     // Lakukan permintaan ke server dengan ID yang ada dalam URL
     axios({
       method: "get",
-      url: `http://localhost:8080/todolist/findbyid/${id}`,
+      url: `http://localhost:8080/cashflow/findbyid/${id}`,
     })
       .then((response) => {
         // Jika berhasil, atur data
         // console.log(id);
 
-        let date = [
-          moment(response.data.data.tanggal, "YYYY-MM-DD"),
-          moment(response.data.data.deadline, "YYYY-MM-DD"),
-        ];
-
-        let updatedData = {
-          ...response.data.data,
-          date: date,
-        };
-
-        let updatedResponseData = {
-          ...response.data,
-          data: updatedData,
-        };
-
-        setInitialData(updatedResponseData);
+        setInitialData(response.data.data);
       })
       .catch((error) => {
         // Jika terjadi kesalahan, atur pesan kesalahan dan/atau redirect ke halaman lain
@@ -60,16 +55,16 @@ const SamplePage = () => {
 
   return (
     <div>
-      <h1 className="gx-main-user-main-title">To-do List</h1>
+      <h1 className="gx-main-user-main-title">Cashflow</h1>
       <div className="gx-main-user-container gx-rounded-lg">
         <div className="gx-main-user-table-filter">
-          <h1 className="gx-mb-4">Edit existing To-Do List!</h1>
+          <h1 className="gx-mb-4">Edit existing Cashflow!</h1>
         </div>
         <div className="gx-flex-column gx-px-3">
           {error ? (
-            <h3>Tidak ada to do list dengan id: {id}</h3>
+            <h3>Tidak ada cashflow dengan id: {id}</h3>
           ) : (
-            initialData && <ToDoEditForm initialValues={initialData} />
+            initialData && <CashflowEditForm initialValues={initialData} />
           )}
         </div>
       </div>
@@ -77,29 +72,36 @@ const SamplePage = () => {
   );
 };
 
-function ToDoEditForm({ initialValues }) {
+function CashflowEditForm({ initialValues }) {
   const history = useHistory();
+
+  const initialData = {
+    id: initialValues.id,
+    id_users: initialValues.id_users,
+    arus: initialValues.arus == "i" ? true : false,
+    nominal: initialValues.nominal,
+    kategori: initialValues.kategori,
+    keterangan: initialValues.keterangan,
+    tanggal: moment(initialValues.tanggal, "YYYY-MM-DD")
+  };
 
   const onFinish = (values) => {
     console.log(values);
-    const { date } = values;
-    const [startDate, endDate] = date.map((date) => date.format("YYYY-MM-DD"));
-    // Now 'startDate' and 'endDate' are strings
-    console.log(startDate, endDate);
-
+    const date = values.tanggal.format("YYYY-MM-DD");
 
     axios({
       method: "put",
-      url: "http://localhost:8080/todolist/update",
+      url: "http://localhost:8080/cashflow/update",
       headers: {
         "Content-Type": "application/json",
       },
       data: JSON.stringify({
         id: values.id,
-        tanggal: startDate,
-        deadline: endDate,
-        check: values.check,
-        kegiatan: values.kegiatan,
+        tanggal: date,
+        arus: values.arus == true ? "i" : "o",
+        nominal: values.nominal,
+        kategori: values.kategori,
+        keterangan: values.keterangan,
       }),
     })
       .then(function (response) {
@@ -130,7 +132,7 @@ function ToDoEditForm({ initialValues }) {
           onCancel() {},
         });
 
-        history.push("/todolist");
+        history.push("/cashflow");
       })
       .catch(function (error) {
         console.log(error);
@@ -145,13 +147,13 @@ function ToDoEditForm({ initialValues }) {
   };
 
   const onClickButtonTest = () => {
-    console.log("initialdata", initialValues.data);
-    console.log("check", initialValues.data.check);
+    console.log("initialdata", initialData);
+    console.log("arus", initialValues.arus);
   };
 
   return (
     <Form
-      initialValues={initialValues.data}
+      initialValues={initialData}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
     >
@@ -159,30 +161,39 @@ function ToDoEditForm({ initialValues }) {
         <Input disabled />
       </Form.Item>
       <Form.Item
-        rules={[{ required: true, message: "Input tanggal dan deadline!" }]}
-        name="date"
-        label="Tanggal & Deadline"
+        rules={[{ required: true, message: "Input tanggal!" }]}
+        name="tanggal"
+        label="Tanggal"
       >
-        <RangePicker />
+        <DatePicker />
       </Form.Item>
       <Form.Item
-        name="check"
-        label="is Check"
+        name="arus"
+        label="Arus"
         valuePropName="checked"
       >
         <Switch
           // onChange={onChangeSwitch}
-          checkedChildren="True"
-          unCheckedChildren="False"
+          checkedChildren="In"
+          unCheckedChildren="Out"
         />
       </Form.Item>
       <Form.Item
-        // initialValue={initialData.data.kegiatan}
-        rules={[{ required: true, message: "Input kegiatan anda!" }]}
-        name="kegiatan"
-        label="Kegiatan"
+        rules={[{ required: true, message: "Input nominal anda!" }]}
+        name="nominal"
+        label="Nominal"
       >
-        <Input placeholder="Kegiatan" />
+        <InputNumber style={{ width: '50%' }}/>
+      </Form.Item>
+      <Form.Item
+        rules={[{ required: true, message: "Input kategori anda!" }]}
+        name="kategori"
+        label="Kategori"
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item name="keterangan" label="Keterangan">
+        <Input />
       </Form.Item>
       <Form.Item>
         <Button className="" htmlType="submit">

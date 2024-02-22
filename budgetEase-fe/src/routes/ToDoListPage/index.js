@@ -44,7 +44,7 @@ const SamplePage = () => {
       },
     })
       .then(function (response) {
-        console.log("dari useEffect", response.data.data);
+        // console.log("dari useEffect", response.data.data);
         setToDoList(response.data.data);
       })
       .catch(function (error) {
@@ -242,9 +242,8 @@ const SamplePage = () => {
             <Form.Item name="kegiatan">
               <Input placeholder="Kegiatan" />
             </Form.Item>
-            <Form.Item name="isCheck" label="is Check" initialValue={true}>
+            <Form.Item name="isCheck" label="is Check" initialValue={false} valuePropName="checked">
               <Switch
-                defaultChecked
                 // onChange={onChangeSwitch}
                 checkedChildren="True"
                 unCheckedChildren="False"
