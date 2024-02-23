@@ -28,7 +28,7 @@ const SamplePage = () => {
     : null;
 
   const onChangeSwitch = (e) => {
-    // console.log(`switch to ${e}`);
+    console.log(`switch to ${e}`);
   };
 
   const history = useHistory();
@@ -62,10 +62,16 @@ const SamplePage = () => {
 
     const { date } = values;
     const [dateFrom, dateTo] = date.map((date) => date.format("YYYY-MM-DD"));
-    // Now 'dateFrom' and 'dateTo' are strings
-    console.log(dateFrom, dateTo);
 
-    console.log(values);
+    let arus;
+
+    if (values.arus == true) {
+      arus = "i"
+    } else if (values.arus == false) {
+      arus = "o"
+    }
+
+    console.log("values", values);
 
     console.log(dateFrom, dateTo);
 
@@ -76,6 +82,7 @@ const SamplePage = () => {
         idUsers: user_credent.id,
         dateFrom: dateFrom,
         dateTo: dateTo,
+        arus: arus,
         kategori: values.kategori,
       },
     })
@@ -114,7 +121,7 @@ const SamplePage = () => {
       title: "Nominal",
       dataIndex: "nominal",
       key: "nominal",
-      defaultSortOrder: 'descend',
+      // defaultSortOrder: 'descend',
       sorter: (a, b) => a.nominal - b.nominal,
       render: (nominal) => <span>Rp {nominal.toLocaleString("id-ID")}</span>,
     },
@@ -260,6 +267,18 @@ const SamplePage = () => {
             </Form.Item>
             <Form.Item name="kategori">
               <Input placeholder="Kategori" />
+            </Form.Item>
+            <Form.Item
+              name="arus"
+              label="Arus"
+              initialValue={false}
+              valuePropName="checked"
+            >
+              <Switch
+                onChange={onChangeSwitch}
+                checkedChildren="In"
+                unCheckedChildren="Out"
+              />
             </Form.Item>
             <Form.Item>
               <Button className="gx-mb-0 gx-w-100" htmlType="submit">

@@ -1,28 +1,28 @@
 import React, { useState } from "react";
 
+import { Form, Input, InputNumber, Button, Col } from "antd";
+
 const initialUserInput = {
   "current-savings": 10000,
   "yearly-contribution": 1200,
   "expected-return": 7,
-  duration: 10
-}
+  duration: 10,
+};
 
 function FormInputInvest(props) {
-
   // const [enteredCurrentSavings, setEnteredCurrentSavings] = useState("");
   // const [enteredYearlyContribution, setEnteredYearlyContribution] = useState("");
   // const [enteredExpectedReturn, setEnteredExpectedReturn] = useState("");
   // const [enteredDuration, setEnteredDuration] = useState("");
-  
-  
-  const [userInput, setUserInput] = useState(initialUserInput)
+
+  const [userInput, setUserInput] = useState(initialUserInput);
 
   function resetHandler(event) {
     // setEnteredCurrentSavings("");
     // setEnteredYearlyContribution("");
     // setEnteredExpectedReturn("");
     // setEnteredDuration("");
-    setUserInput(initialUserInput)
+    setUserInput(initialUserInput);
   }
 
   // function inputChangeHandler(identifier, value) {
@@ -38,82 +38,101 @@ function FormInputInvest(props) {
   // }
 
   function inputChangeHandler(input, value) {
-    setUserInput((prevInput) => {
-      return {
-        ...prevInput,
-        [input]: +value
-      }
-    })
+    // setUserInput((prevInput) => {
+    //   return {
+    //     ...prevInput,
+    //     [input]: +value,
+    //   };
+    // });
   }
 
-  function submitHandler(event) {
-    event.preventDefault();
-
-    props.onCalculate(userInput);
-
+  function submitHandler(values) {
+    props.onCalculate(values);
   }
 
   return (
-    <form onSubmit={submitHandler} className="form">
-      <div className={['input-group']}>
-        <p>
-          <label htmlFor="current-savings">Current Savings ($)</label>
-          <input
-            value={userInput['current-savings']}
-            onChange={(event) =>
-              inputChangeHandler("current-savings", event.target.value)
-            }
-            type="number"
-            id="current-savings"
-          />
-        </p>
-        <p>
-          <label htmlFor="yearly-contribution">Yearly Savings ($)</label>
-          <input
-            value={userInput['yearly-contribution']}
-            onChange={(event) =>
-              inputChangeHandler("yearly-contribution", event.target.value)
-            }
-            type="number"
-            id="yearly-contribution"
-          />
-        </p>
-      </div>
-      <div className={['input-group']}>
-        <p>
-          <label htmlFor="expected-return">
-            Expected Interest (%, per year)
-          </label>
-          <input
-            value={userInput['expected-return']}
-            onChange={(event) =>
-              inputChangeHandler("expected-return", event.target.value)
-            }
-            type="number"
-            id="expected-return"
-          />
-        </p>
-        <p>
-          <label htmlFor="duration">Investment Duration (years)</label>
-          <input
-            value={userInput['duration']}
-            onChange={(event) =>
-              inputChangeHandler("duration", event.target.value)
-            }
-            type="number"
-            id="duration"
-          />
-        </p>
-      </div>
-      <p className="actions">
-        <button onClick={resetHandler} type="reset" className="buttonAlt">
-          Reset
-        </button>
-        <button type="submit" className="button">
-          Calculate
-        </button>
-      </p>
-    </form>
+    <div>
+      <Form
+        layout="inline"
+        onFinish={submitHandler}
+        initialValues={initialUserInput}
+        className="gx-invest-form-input"
+      >
+        <div className="gx-invest-input-group">
+          <Form.Item
+            rules={[{ required: true, message: "Input tabungan sekarang!" }]}
+            label="Current Savings (Rp)"
+            name="current-savings"
+          >
+            <InputNumber
+              onChange={inputChangeHandler}
+              style={{ width: "100%" }}
+            />
+          </Form.Item>
+          <Form.Item
+            rules={[{ required: true, message: "Input investasi tahunan!" }]}
+            label="Yearly Savings (Rp)"
+            name="yearly-contribution"
+          >
+            <InputNumber
+              onChange={inputChangeHandler}
+              style={{ width: "100%" }}
+            />
+          </Form.Item>
+        </div>
+        <div className="gx-invest-input-group">
+          <Form.Item
+            rules={[
+              { required: true, message: "Input ekspektasi return!" },
+              {
+                type: "number",
+                min: 1,
+                message: "Return input minimal 1%!",
+              },
+            ]}
+            label="Expected Interest (%, per year)"
+            name="expected-return"
+          >
+            <InputNumber
+              onChange={inputChangeHandler}
+              style={{ width: "100%" }}
+            />
+          </Form.Item>
+          <Form.Item
+            rules={[
+              { required: true, message: "Input durasi investasi!" },
+              {
+                type: "number",
+                min: 1,
+                message: "Waktu input minimal 1 tahun!",
+              },
+              {
+                type: "number",
+                max: 70,
+                message: "Waktu input maksimal 70 tahun!",
+              },
+            ]}
+            label="Investment Duration (years)"
+            name="duration"
+          >
+            <InputNumber
+              onChange={inputChangeHandler}
+              style={{ width: "100%" }}
+            />
+          </Form.Item>
+        </div>
+        <div className="gx-invest-input-group gx-w-100">
+          <Form.Item>
+            {/* <Button onClick={resetHandler} htmlType="reset" className="gx-mb-0 gx-px-5">
+              Reset
+            </Button> */}
+            <Button htmlType="submit" className="gx-mb-0 gx-px-5">
+              Calculate
+            </Button>
+          </Form.Item>
+        </div>
+      </Form>
+    </div>
   );
 }
 

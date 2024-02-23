@@ -1,42 +1,97 @@
-const formatter = new Intl.NumberFormat('en-ID', {
-  style: 'currency',
-  currency: 'IDR',
-  currencyDisplay: 'narrowSymbol',
+import React, { useState } from "react";
+
+import {
+  Form,
+  Input,
+  Button,
+  Modal,
+  Table,
+  Switch,
+  DatePicker,
+  Space,
+  Checkbox,
+  Row,
+  Col,
+} from "antd";
+
+const formatter = new Intl.NumberFormat("en-ID", {
+  style: "currency",
+  currency: "IDR",
+  currencyDisplay: "narrowSymbol",
   maximumFractionDigits: 0,
-   
-})
+});
 
 function ResultsTable(props) {
+  const columns = [
+    {
+      title: "Year",
+      dataIndex: "year",
+      key: "year",
+    },
+    {
+      title: "Savings End of Year",
+      dataIndex: "savingsEndOfYear",
+      key: "savingsEndOfYear",
+      render: (text) => formatter.format(text).replace(",", "."),
+    },
+    {
+      title: "Yearly Interest",
+      dataIndex: "yearlyInterest",
+      key: "yearlyInterest",
+      render: (text) => formatter.format(text).replace(",", "."),
+    },
+    {
+      title: "Total Interest",
+      dataIndex: "totalInterest",
+      key: "totalInterest",
+      render: (text, record) => {
+        // console.log("Total Interest", record.savingsEndOfYear, props.initialInvestment, record.yearlyContribution, record.year)
+        const totalInterest =
+          record.savingsEndOfYear -
+          props.initialInvestment -
+          record.yearlyContribution * record.year;
+        return formatter.format(totalInterest).replace(",", ".");
+      },
+    },
+    {
+      title: "Invested Capital",
+      dataIndex: "investedCapital",
+      key: "investedCapital",
+      render: (text, record) => {
+        // console.log(props.initialInvestment, record.yearlyContribution, record.year)
+        const investedCapital =
+          props.initialInvestment + record.yearlyContribution * record.year;
+        return formatter.format(investedCapital).replace(",", ".");
+      },
+    },
+  ];
+
+  // console.log(props.data)
+
+  // Assuming props.data is the dataSource
+  const dataSource = props.data.map((yearData) => ({
+    key: yearData.year, // Assuming 'year' is unique
+    year: yearData.year,
+    savingsEndOfYear: yearData.savingsEndOfYear,
+    yearlyInterest: yearData.yearlyInterest,
+    yearlyContribution: yearData.yearlyContribution,
+    totalInterest:
+      yearData.savingsEndOfYear -
+      props.initialInvestment -
+      yearData.yearlyContribution * yearData.year,
+    investedCapital:
+      props.initialInvestment + yearData.yearlyContribution * yearData.year,
+  }));
+
+  console.log("datasource", dataSource);
+
   return (
-    <table className="result">
-      <thead>
-        <tr>
-          <th>Year</th>
-          <th>Total Savings</th>
-          <th>Interest (Year)</th>
-          <th>Total Interest</th>
-          <th>Invested Capital</th>
-        </tr>
-      </thead>
-      <tbody>
-        {props.data.map((yearData) => (
-          <tr key={yearData.year}>
-            <td>{yearData.year}</td>
-            <td>{formatter.format(yearData.savingsEndOfYear).replace(",", ".")}</td>
-            <td>{formatter.format(yearData.yearlyInterest).replace(",", ".")}</td>
-            <td>
-              {formatter.format(yearData.savingsEndOfYear -
-                props.initialInvestment -
-                yearData.yearlyContribution * yearData.year).replace(",", ".")}
-            </td>
-            <td>
-              {formatter.format(props.initialInvestment +
-                yearData.yearlyContribution * yearData.year).replace(",", ".")}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <Table
+      className="gx-mt-2"
+      columns={columns}
+      dataSource={dataSource}
+      pagination={false} // Optional: Disable pagination if not needed
+    />
   );
 }
 

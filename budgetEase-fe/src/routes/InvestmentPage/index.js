@@ -35,6 +35,8 @@ const SamplePage = () => {
     }
   }
 
+  console.log("yearly data", yearlyData);
+
   return (
     <div>
       <h1 className="gx-main-user-main-title">Investment Calculator</h1>
