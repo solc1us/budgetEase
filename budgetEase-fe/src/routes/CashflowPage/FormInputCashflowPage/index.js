@@ -1,11 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 import axios from "axios";
 
 import { CheckCircleFilled, ExclamationCircleFilled } from "@ant-design/icons";
-import { Form, Input, Button, DatePicker, Modal, Row, Col, Switch, InputNumber } from "antd";
+import {
+  Form,
+  Input,
+  Button,
+  DatePicker,
+  Modal,
+  Row,
+  Col,
+  Switch,
+  InputNumber,
+  Select,
+} from "antd";
 
 const { RangePicker } = DatePicker;
 
@@ -18,15 +29,15 @@ const SamplePage = () => {
 
   const onFinishFailed = (errorInfo) => {};
 
-  const onFinish = (values) => {
+  const onFinishCashflow = (values) => {
     // console.log(user_credent.id);
 
     let arus;
 
     if (values.arus == true) {
-      arus = "i"
+      arus = "i";
     } else if (values.arus == false) {
-      arus = "o"
+      arus = "o";
     }
 
     console.log(values);
@@ -37,7 +48,7 @@ const SamplePage = () => {
       url: "http://localhost:8080/cashflow/create",
       data: {
         id_users: user_credent.id,
-        tanggal: values.date.format('YYYY-MM-DD'),
+        tanggal: values.date.format("YYYY-MM-DD"),
         arus: arus,
         nominal: values.nominal,
         kategori: values.kategori,
@@ -80,18 +91,112 @@ const SamplePage = () => {
       .finally(function () {
         // always executed
       });
-
   };
+
+  const onFinishKategori = (values) => {
+    // console.log(user_credent.id);
+
+    console.log(values);
+    // console.log(userId)
+
+    axios({
+      method: "post",
+      url: "http://localhost:8080/kategori/create",
+      data: {
+        id_users: user_credent.id,
+        kategori: values.kategori,
+      },
+    })
+      .then(function (response) {
+        console.log(response);
+
+        Modal.success({
+          centered: true,
+          icon: <CheckCircleFilled />,
+          okType: "Pemberitahuan !",
+          content: (
+            <div className="gx-text-dark">
+              <p>{response.data.message}</p>
+            </div>
+          ),
+          title: (
+            <Row
+              type="flex"
+              justify="start"
+              style={{ alignItems: "center" }}
+              gutter={[5, 0]}
+            >
+              <Col>
+                <span>Berhasil!</span>
+              </Col>
+            </Row>
+          ),
+          onOk() {},
+          onCancel() {},
+        });
+
+        history.push("/cashflow-newcashflow");
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        // always executed
+      });
+  };
+
+  const [kategori, setKategori] = useState([]);
+
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: "http://localhost:8080/kategori/find",
+      params: {
+        idUsers: user_credent.id,
+      },
+    })
+      .then(function (response) {
+        console.log(response.data.data);
+        setKategori(response.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        // always executed
+      });
+  }, []);
 
   return (
     <div>
       <h1 className="gx-main-user-main-title">Cashflow</h1>
       <div className="gx-main-user-container gx-rounded-lg">
         <div className="gx-main-user-table-filter">
+          <h1 className="gx-mb-4">Create new Kategori!</h1>
+        </div>
+        <div className="gx-flex-column gx-px-3">
+          <Form onFinish={onFinishKategori} onFinishFailed={onFinishFailed}>
+            <Form.Item
+              rules={[{ required: true, message: "Input kategori!" }]}
+              name="kategori"
+              label="Kategori"
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item>
+              <Button className="gx-mb-0" htmlType="submit">
+                <span style={{ color: "black" }}>Submit</span>
+              </Button>
+            </Form.Item>
+          </Form>
+        </div>
+      </div>
+      <div className="gx-main-user-container gx-rounded-lg">
+        <div className="gx-main-user-table-filter">
           <h1 className="gx-mb-4">Create new Cashflow!</h1>
         </div>
         <div className="gx-flex-column gx-px-3">
-          <Form onFinish={onFinish} onFinishFailed={onFinishFailed}>
+          <Form onFinish={onFinishCashflow} onFinishFailed={onFinishFailed}>
             <Form.Item
               rules={[{ required: true, message: "Input tanggal pencarian!" }]}
               name="date"
@@ -116,23 +221,27 @@ const SamplePage = () => {
               name="nominal"
               label="Nominal"
             >
-              <InputNumber style={{ width: '50%' }}  />
+              <InputNumber style={{ width: "50%" }} />
             </Form.Item>
             <Form.Item
-              rules={[{ required: true, message: "Input kategori!" }]}
+              rules={[{ required: true, message: "Input Tidak Valid" }]}
               name="kategori"
               label="Kategori"
             >
-              <Input  />
+              <Select>
+                {kategori.map((item) => (
+                  <Select.Option key={item.id} value={item.kategori}>
+                    {item.kategori}
+                  </Select.Option>
+                ))}
+                ,
+              </Select>
             </Form.Item>
-            <Form.Item
-              name="keterangan"
-              label="Keterangan"
-            >
+            <Form.Item name="keterangan" label="Keterangan">
               <Input />
             </Form.Item>
             <Form.Item>
-              <Button className="" htmlType="submit">
+              <Button className="gx-mb-0" htmlType="submit">
                 <span style={{ color: "black" }}>Submit</span>
               </Button>
             </Form.Item>

@@ -12,6 +12,7 @@ import {
   Checkbox,
   Row,
   Col,
+  Select,
 } from "antd";
 
 import { CheckCircleFilled, ExclamationCircleFilled } from "@ant-design/icons";
@@ -61,14 +62,19 @@ const SamplePage = () => {
     // console.log(user_credent.id);
 
     const { date } = values;
-    const [dateFrom, dateTo] = date.map((date) => date.format("YYYY-MM-DD"));
+    let dateFrom;
+    let dateTo;
+
+    if (date) {
+      [dateFrom, dateTo] = date.map((date) => date.format("YYYY-MM-DD"));
+    }
 
     let arus;
 
     if (values.arus == true) {
-      arus = "i"
+      arus = "i";
     } else if (values.arus == false) {
-      arus = "o"
+      arus = "o";
     }
 
     console.log("values", values);
@@ -249,6 +255,28 @@ const SamplePage = () => {
       });
   };
 
+  const [kategori, setKategori] = useState([]);
+
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: "http://localhost:8080/kategori/find",
+      params: {
+        idUsers: user_credent.id,
+      },
+    })
+      .then(function (response) {
+        console.log(response.data.data);
+        setKategori(response.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        // always executed
+      });
+  }, []);
+
   return (
     <div>
       <h1 className="gx-main-user-main-title">Cashflow</h1>
@@ -260,13 +288,23 @@ const SamplePage = () => {
             onFinishFailed={onFinishFailed}
           >
             <Form.Item
-              rules={[{ required: true, message: "Input tanggal pencarian!" }]}
+              // rules={[{ required: true, message: "Input tanggal pencarian!" }]}
               name="date"
             >
               <RangePicker />
             </Form.Item>
-            <Form.Item name="kategori">
-              <Input placeholder="Kategori" />
+            <Form.Item
+              // rules={[{ required: true, message: "Input Tidak Valid" }]}
+              name="kategori"
+            >
+              <Select placeholder="Pilih Kategori" style={{ width: "100%" }}>
+                {kategori.map((item) => (
+                  <Select.Option key={item.id} value={item.kategori}>
+                    {item.kategori}
+                  </Select.Option>
+                ))}
+                ,
+              </Select>
             </Form.Item>
             <Form.Item
               name="arus"

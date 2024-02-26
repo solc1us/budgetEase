@@ -15,6 +15,7 @@ import {
   Col,
   Switch,
   InputNumber,
+  Select,
 } from "antd";
 
 import moment from "moment";
@@ -73,6 +74,10 @@ const SamplePage = () => {
 };
 
 function CashflowEditForm({ initialValues }) {
+  const user_credent = localStorage.getItem("user_credent")
+    ? JSON.parse(localStorage.getItem("user_credent"))
+    : null;
+
   const history = useHistory();
 
   const initialData = {
@@ -82,7 +87,7 @@ function CashflowEditForm({ initialValues }) {
     nominal: initialValues.nominal,
     kategori: initialValues.kategori,
     keterangan: initialValues.keterangan,
-    tanggal: moment(initialValues.tanggal, "YYYY-MM-DD")
+    tanggal: moment(initialValues.tanggal, "YYYY-MM-DD"),
   };
 
   const onFinish = (values) => {
@@ -151,6 +156,28 @@ function CashflowEditForm({ initialValues }) {
     console.log("arus", initialValues.arus);
   };
 
+  const [kategori, setKategori] = useState([]);
+
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: "http://localhost:8080/kategori/find",
+      params: {
+        idUsers: user_credent.id,
+      },
+    })
+      .then(function (response) {
+        console.log(response.data.data);
+        setKategori(response.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        // always executed
+      });
+  }, []);
+
   return (
     <Form
       initialValues={initialData}
@@ -167,11 +194,7 @@ function CashflowEditForm({ initialValues }) {
       >
         <DatePicker />
       </Form.Item>
-      <Form.Item
-        name="arus"
-        label="Arus"
-        valuePropName="checked"
-      >
+      <Form.Item name="arus" label="Arus" valuePropName="checked">
         <Switch
           // onChange={onChangeSwitch}
           checkedChildren="In"
@@ -183,14 +206,21 @@ function CashflowEditForm({ initialValues }) {
         name="nominal"
         label="Nominal"
       >
-        <InputNumber style={{ width: '50%' }}/>
+        <InputNumber style={{ width: "50%" }} />
       </Form.Item>
       <Form.Item
-        rules={[{ required: true, message: "Input kategori anda!" }]}
+        rules={[{ required: true, message: "Input Tidak Valid" }]}
         name="kategori"
         label="Kategori"
       >
-        <Input />
+        <Select>
+          {kategori.map((item) => (
+            <Select.Option key={item.id} value={item.kategori}>
+              {item.kategori}
+            </Select.Option>
+          ))}
+          ,
+        </Select>
       </Form.Item>
       <Form.Item name="keterangan" label="Keterangan">
         <Input />
