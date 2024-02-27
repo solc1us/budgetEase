@@ -110,7 +110,7 @@ const SamplePage = () => {
       key: "deadline",
     },
     {
-      title: "Check",
+      title: "Done",
       dataIndex: "check",
       key: "check",
       render: (check) => (
@@ -242,7 +242,7 @@ const SamplePage = () => {
             <Form.Item name="kegiatan">
               <Input placeholder="Kegiatan" />
             </Form.Item>
-            <Form.Item name="isCheck" label="is Check" initialValue={false} valuePropName="checked">
+            <Form.Item name="isCheck" label="is Done?" initialValue={false} valuePropName="checked">
               <Switch
                 // onChange={onChangeSwitch}
                 checkedChildren="True"
@@ -264,9 +264,9 @@ const SamplePage = () => {
         </div>
         <div className="gx-main-user-table">
           <Table dataSource={tableData} columns={columns}></Table>
-          <Button onClick={onClickButtonTest}>
+          {/* <Button onClick={onClickButtonTest}>
             Button testing utk console log
-          </Button>
+          </Button> */}
         </div>
       </div>
     </div>

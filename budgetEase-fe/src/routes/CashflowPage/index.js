@@ -333,9 +333,9 @@ const SamplePage = () => {
         </div>
         <div className="gx-main-user-table">
           <Table dataSource={tableData} columns={columns}></Table>
-          <Button onClick={onClickButtonTest}>
+          {/* <Button onClick={onClickButtonTest}>
             Button testing utk console log
-          </Button>
+          </Button> */}
         </div>
       </div>
     </div>

@@ -122,7 +122,7 @@ const Home = () => {
                   <h1>Bantuan</h1>
                   <p><Link to="/signin">Login</Link></p>
                   <p><Link to="/signup">Register</Link></p>
-                  <p><Link>085888864526</Link></p>
+                  <p><a href="https://api.whatsapp.com/send/?phone=6285888864526&text=Saya+ingin+bertanya+lebih+lanjut+mengenai+budgetEase&type=phone_number&app_absent=0">085888864526</a></p>
                 </div>
               </div>
             </div>

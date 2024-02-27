@@ -230,9 +230,9 @@ function CashflowEditForm({ initialValues }) {
           <span style={{ color: "black" }}>Edit</span>
         </Button>
       </Form.Item>
-      <Button onClick={onClickButtonTest}>
+      {/* <Button onClick={onClickButtonTest}>
         <span style={{ color: "black" }}>button testing console log</span>
-      </Button>
+      </Button> */}
     </Form>
   );
 }

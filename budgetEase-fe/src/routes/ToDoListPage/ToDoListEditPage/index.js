@@ -167,7 +167,7 @@ function ToDoEditForm({ initialValues }) {
       </Form.Item>
       <Form.Item
         name="check"
-        label="is Check"
+        label="is Done?"
         valuePropName="checked"
       >
         <Switch
@@ -182,16 +182,16 @@ function ToDoEditForm({ initialValues }) {
         name="kegiatan"
         label="Kegiatan"
       >
-        <Input placeholder="Kegiatan" />
+        <Input />
       </Form.Item>
       <Form.Item>
         <Button className="" htmlType="submit">
           <span style={{ color: "black" }}>Edit</span>
         </Button>
       </Form.Item>
-      <Button onClick={onClickButtonTest}>
+      {/* <Button onClick={onClickButtonTest}>
         <span style={{ color: "black" }}>button testing console log</span>
-      </Button>
+      </Button> */}
     </Form>
   );
 }

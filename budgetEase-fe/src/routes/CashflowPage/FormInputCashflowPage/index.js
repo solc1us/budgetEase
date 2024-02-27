@@ -18,6 +18,8 @@ import {
   Select,
 } from "antd";
 
+import moment from "moment";
+
 const { RangePicker } = DatePicker;
 
 const SamplePage = () => {
@@ -167,6 +169,11 @@ const SamplePage = () => {
       });
   }, []);
 
+  const disabledDate = (current) => {
+    // Disable all dates after today
+    return current && current > moment().endOf('day');
+  };
+
   return (
     <div>
       <h1 className="gx-main-user-main-title">Cashflow</h1>
@@ -202,7 +209,7 @@ const SamplePage = () => {
               name="date"
               label="Tanggal"
             >
-              <DatePicker />
+              <DatePicker disabledDate={disabledDate}/>
             </Form.Item>
             <Form.Item
               name="arus"

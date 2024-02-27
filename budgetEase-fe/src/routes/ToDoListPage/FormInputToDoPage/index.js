@@ -106,7 +106,7 @@ const SamplePage = () => {
               name="kegiatan"
               label="Kegiatan"
             >
-              <Input placeholder="Kegiatan" />
+              <Input />
             </Form.Item>
             <Form.Item>
               <Button className="" htmlType="submit">

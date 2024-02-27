@@ -52,7 +52,7 @@ const SidebarContent = ({sidebarCollapsed, setSidebarCollapsed}) => {
             </Menu.Item>
             <Menu.Item key="report">
               <Link to="/report"><i className="icon icon-widgets"/>
-                <span>Report</span>
+                <span>Yearly Report</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="todolist">

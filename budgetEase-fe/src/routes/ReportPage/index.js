@@ -33,15 +33,24 @@ const SamplePage = () => {
           date: moment(item.tanggal, "YYYY-MM-DD"), // Assuming date format is 'YYYY-MM-DD'
         }));
 
-        const filterIncomingCashflow = cashflowWithMoment.filter(
-          (item) => item.arus === "i"
-        );
-        setIncomingCashflow(filterIncomingCashflow);
+        // Filter cashflows for incoming cashflows (arus === 'i') and current year
+        const incomingCashflowThisYear = cashflowWithMoment.filter((cashflow) => {
+          const cashflowYear = moment(cashflow.tanggal).year(); // Get the year of the cashflow
+          const currentYear = moment().year(); // Get the current year
+          return cashflowYear === currentYear && cashflow.arus === "i"; // Filter for current year and incoming
+        });
 
-        const filterOutcomingCashflow = cashflowWithMoment.filter(
-          (item) => item.arus === "o"
-        );
-        setOutcomingCashflow(filterOutcomingCashflow);
+        // console.log("incoming", incomingCashflowThisYear);
+        setIncomingCashflow(incomingCashflowThisYear);
+
+        // Filter cashflows for outcoming cashflows (arus === 'o') and current year
+        const outcomingCashflowThisYear = cashflowWithMoment.filter((cashflow) => {
+          const cashflowYear = moment(cashflow.tanggal).year(); // Get the year of the cashflow
+          const currentYear = moment().year(); // Get the current year
+          return cashflowYear === currentYear && cashflow.arus === "o"; // Filter for current year and outcoming
+        });
+
+        setOutcomingCashflow(outcomingCashflowThisYear);
       })
       .catch(function (error) {
         console.log(error);
@@ -126,7 +135,7 @@ const SamplePage = () => {
 
   return (
     <div>
-      <h1 className="gx-main-user-main-title">Report</h1>
+      <h1 className="gx-main-user-main-title">Yearly Report</h1>
       <div className="gx-main-user-container gx-rounded-lg">
         <div>
           <h1 className="gx-font-weight-semi-bold">Pemasukan Tahunan</h1>
@@ -175,9 +184,9 @@ const SamplePage = () => {
           </div>
         </div>
       </div>
-      <Button onClick={onClickButtonTesting}>
+      {/* <Button onClick={onClickButtonTesting}>
         Button Testing utk console log
-      </Button>
+      </Button> */}
     </div>
   );
 };
