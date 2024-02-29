@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { useHistory } from "react-router-dom/cjs/react-router-dom";
+import { Link, useHistory } from "react-router-dom/cjs/react-router-dom";
 
 import axios from "axios";
 
@@ -95,58 +95,6 @@ const SamplePage = () => {
       });
   };
 
-  const onFinishKategori = (values) => {
-    // console.log(user_credent.id);
-
-    console.log(values);
-    // console.log(userId)
-
-    axios({
-      method: "post",
-      url: "http://localhost:8080/kategori/create",
-      data: {
-        id_users: user_credent.id,
-        kategori: values.kategori,
-      },
-    })
-      .then(function (response) {
-        console.log(response);
-
-        Modal.success({
-          centered: true,
-          icon: <CheckCircleFilled />,
-          okType: "Pemberitahuan !",
-          content: (
-            <div className="gx-text-dark">
-              <p>{response.data.message}</p>
-            </div>
-          ),
-          title: (
-            <Row
-              type="flex"
-              justify="start"
-              style={{ alignItems: "center" }}
-              gutter={[5, 0]}
-            >
-              <Col>
-                <span>Berhasil!</span>
-              </Col>
-            </Row>
-          ),
-          onOk() {},
-          onCancel() {},
-        });
-
-        history.push("/cashflow-newcashflow");
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-      .finally(function () {
-        // always executed
-      });
-  };
-
   const [kategori, setKategori] = useState([]);
 
   useEffect(() => {
@@ -171,33 +119,12 @@ const SamplePage = () => {
 
   const disabledDate = (current) => {
     // Disable all dates after today
-    return current && current > moment().endOf('day');
+    return current && current > moment().endOf("day");
   };
 
   return (
     <div>
       <h1 className="gx-main-user-main-title">Cashflow</h1>
-      <div className="gx-main-user-container gx-rounded-lg">
-        <div className="gx-main-user-table-filter">
-          <h1 className="gx-mb-4">Create new Kategori!</h1>
-        </div>
-        <div className="gx-flex-column gx-px-3">
-          <Form onFinish={onFinishKategori} onFinishFailed={onFinishFailed}>
-            <Form.Item
-              rules={[{ required: true, message: "Input kategori!" }]}
-              name="kategori"
-              label="Kategori"
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item>
-              <Button className="gx-mb-0" htmlType="submit">
-                <span style={{ color: "black" }}>Submit</span>
-              </Button>
-            </Form.Item>
-          </Form>
-        </div>
-      </div>
       <div className="gx-main-user-container gx-rounded-lg">
         <div className="gx-main-user-table-filter">
           <h1 className="gx-mb-4">Create new Cashflow!</h1>
@@ -209,7 +136,7 @@ const SamplePage = () => {
               name="date"
               label="Tanggal"
             >
-              <DatePicker disabledDate={disabledDate}/>
+              <DatePicker disabledDate={disabledDate} />
             </Form.Item>
             <Form.Item
               name="arus"
@@ -242,6 +169,21 @@ const SamplePage = () => {
                   </Select.Option>
                 ))}
                 ,
+                <Select.Option
+                  key="addNew"
+                  value="addNew"
+                  style={{ backgroundColor: "#52c41a" }}
+                >
+                  <Link to="/cashflow-newkategori">
+                    <img
+                      src="/assets/icons/plus.svg"
+                      width="16"
+                      height="16"
+                      alt="Add"
+                    />
+                    <span style={{ color: "black" }}>Add Kategori</span>
+                  </Link>
+                </Select.Option>
               </Select>
             </Form.Item>
             <Form.Item name="keterangan" label="Keterangan">

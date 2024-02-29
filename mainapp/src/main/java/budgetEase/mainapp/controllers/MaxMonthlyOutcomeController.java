@@ -1,7 +1,7 @@
 package budgetEase.mainapp.controllers;
 
-import java.util.Collections;
-import java.util.Comparator;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,41 +21,42 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import budgetEase.mainapp.models.Kategori;
-import budgetEase.mainapp.repos.KategoriRepo;
+import budgetEase.mainapp.models.MaxMonthlyOutcome;
+import budgetEase.mainapp.repos.MaxMonthlyOutcomeRepo;
 import budgetEase.mainapp.services.BudgetEaseService;
 import budgetEase.mainapp.utils.MessageModel;
 import budgetEase.mainapp.utils.MessageModelPagination;
 import budgetEase.mainapp.utils.SortingAndAscendingDescending;
 
 @RestController
-@RequestMapping("/kategori")
-public class KategoriController {
+@RequestMapping("/mmo")
+public class MaxMonthlyOutcomeController {
 
   @Autowired
-  KategoriRepo kategoriRepo;
+  MaxMonthlyOutcomeRepo maxMonthlyOutcomeRepo;
 
-    @Autowired
+  @Autowired
   SortingAndAscendingDescending sortingAndAscendingDescending;
 
   @Autowired
   BudgetEaseService budgetEaseService;
 
   @PostMapping("/create")
-  public ResponseEntity<Object> insertData(@RequestBody Kategori data) {
+  public ResponseEntity<Object> insertData(@RequestBody MaxMonthlyOutcome data) {
 
     MessageModel msg = new MessageModel();
 
     try {
-      Kategori kategori = new Kategori();
+      MaxMonthlyOutcome maxMonthlyOutcome = new MaxMonthlyOutcome();
 
-      kategori.setId_users(data.getId_users());
-      kategori.setKategori(data.getKategori());
+      maxMonthlyOutcome.setId_users(data.getId_users());
+      maxMonthlyOutcome.setNominal(data.getNominal());
+      maxMonthlyOutcome.setDate_created(LocalDateTime.now());
 
-      kategoriRepo.save(kategori);
+      maxMonthlyOutcomeRepo.save(maxMonthlyOutcome);
 
       msg.setMessage("Success");
-      msg.setData(kategori);
+      msg.setData(maxMonthlyOutcome);
 
       return ResponseEntity.status(HttpStatus.OK).body(msg);
 
@@ -78,7 +79,7 @@ public class KategoriController {
       Sort objSort = sortingAndAscendingDescending.getSortingData(sort, urutan);
       Pageable pageRequest = objSort == null ? PageRequest.of(page, size) : PageRequest.of(page, size, objSort);
 
-      Page<Kategori> data = kategoriRepo.findAll(pageRequest);
+      Page<MaxMonthlyOutcome> data = maxMonthlyOutcomeRepo.findAll(pageRequest);
 
       msg.setMessage("Success");
       msg.setData(data.getContent());
@@ -95,8 +96,9 @@ public class KategoriController {
   }
 
   @GetMapping("/find")
-  public ResponseEntity<Object> findKategori(
-      @RequestParam(value = "idUsers", required = true) String idUsers) {
+  public ResponseEntity<Object> findMaxMonthlyOutcome(
+      @RequestParam(value = "idUsers", required = true) String idUsers,
+      @RequestParam(value = "getLast", required = false) Boolean getLast) {
 
     MessageModel msg = new MessageModel();
 
@@ -107,12 +109,26 @@ public class KategoriController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
       }
 
-      List<Kategori> kategoris = kategoriRepo.findByIdUsers(idUsers);
+      List<MaxMonthlyOutcome> maxMonthlyOutcomes = maxMonthlyOutcomeRepo.findTopByIdUsers(idUsers);
 
-      Collections.sort(kategoris, Comparator.comparing(Kategori::getKategori).reversed());
+      // Check if getLast is true and the list has elements
+      if (getLast != null && getLast && !maxMonthlyOutcomes.isEmpty()) {
+        // Return only the first element
+        Optional<MaxMonthlyOutcome> firstOutcomeOptional = maxMonthlyOutcomes.stream().findFirst();
 
-      msg.setMessage("Sukses");
-      msg.setData(kategoris);
+        // Check if the Optional contains a value
+        if (firstOutcomeOptional.isPresent()) {
+          MaxMonthlyOutcome firstOutcome = firstOutcomeOptional.get();
+          msg.setMessage("Sukses (1 data)");
+          msg.setData(firstOutcome);
+        } else {
+          msg.setMessage("Data not found");
+        }
+      } else {
+        msg.setMessage("Sukses (Semua data)");
+        msg.setData(maxMonthlyOutcomes);
+      }
+
       return ResponseEntity.ok(msg);
 
     } catch (Exception e) {
@@ -121,7 +137,7 @@ public class KategoriController {
   }
 
   @GetMapping("/findbyid/{id}")
-  public ResponseEntity<Object> findKategoriById(
+  public ResponseEntity<Object> findMaxMonthlyOutcomeById(
       @PathVariable("id") String id) {
 
     MessageModel msg = new MessageModel();
@@ -133,15 +149,15 @@ public class KategoriController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
       }
 
-      Optional<Kategori> kategori = kategoriRepo.findById(id);
+      Optional<MaxMonthlyOutcome> maxMonthlyOutcome = maxMonthlyOutcomeRepo.findById(id);
 
-      if (!kategori.isPresent() || kategori == null) {
+      if (!maxMonthlyOutcome.isPresent() || maxMonthlyOutcome == null) {
         msg.setMessage("'id' yang anda masukkan salah (tidak ada di database).");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
       }
 
       msg.setMessage("Sukses");
-      msg.setData(kategori);
+      msg.setData(maxMonthlyOutcome);
       return ResponseEntity.ok(msg);
 
     } catch (Exception e) {
@@ -150,8 +166,8 @@ public class KategoriController {
   }
 
   @DeleteMapping("/deletebatch")
-  public ResponseEntity<Object> deleteItems(@RequestBody List<Kategori> id) {
-    kategoriRepo.deleteAll(id);
+  public ResponseEntity<Object> deleteItems(@RequestBody List<MaxMonthlyOutcome> id) {
+    maxMonthlyOutcomeRepo.deleteAll(id);
     return ResponseEntity.status(HttpStatus.OK).body("Semua item berhasil dihapus");
   }
 
@@ -162,17 +178,17 @@ public class KategoriController {
 
     try {
 
-      Optional<Kategori> kategori = kategoriRepo.findById(id);
+      Optional<MaxMonthlyOutcome> maxMonthlyOutcome = maxMonthlyOutcomeRepo.findById(id);
 
-      if (kategori.isPresent()) {
+      if (maxMonthlyOutcome.isPresent()) {
 
-        kategoriRepo.deleteById(id);
+        maxMonthlyOutcomeRepo.deleteById(id);
 
-        msg.setMessage("Berhasil menghapus yang kegiatannya: " + kategori.get().getKategori());
-        msg.setData(kategori);
+        msg.setMessage("Berhasil menghapus yang ID nya: " + maxMonthlyOutcome.get().getId());
+        msg.setData(maxMonthlyOutcome);
         return ResponseEntity.status(HttpStatus.OK).body(msg);
       } else {
-        msg.setMessage("Tidak dapat menemukan kategori dengan id: " + id);
+        msg.setMessage("Tidak dapat menemukan maxMonthlyOutcome dengan id: " + id);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
       }
 
@@ -180,5 +196,5 @@ public class KategoriController {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
   }
-  
+
 }

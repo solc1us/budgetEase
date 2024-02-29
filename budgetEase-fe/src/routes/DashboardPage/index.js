@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import {
   Form,
@@ -12,11 +12,16 @@ import {
   Checkbox,
   Row,
   Col,
+  InputNumber,
 } from "antd";
 
 import moment from "moment";
 
-import { CheckCircleFilled, ExclamationCircleFilled } from "@ant-design/icons";
+import {
+  CheckCircleFilled,
+  ExclamationCircleFilled,
+  QuestionCircleFilled,
+} from "@ant-design/icons";
 
 import { Link, useHistory } from "react-router-dom";
 
@@ -31,9 +36,8 @@ const SamplePage = () => {
 
   const [cashflows, setCashflows] = useState([]);
 
-  const [income, setIncome] = useState(null);
-
   useEffect(() => {
+    console.log("Fetching Cashflows...");
     axios({
       method: "get",
       url: "http://localhost:8080/cashflow/find",
@@ -42,7 +46,7 @@ const SamplePage = () => {
       },
     })
       .then(function (response) {
-        console.log("dari useEffect", response.data.data);
+        console.log("Fetched Cashflows:", response.data.data);
         setCashflows(response.data.data);
       })
       .catch(function (error) {
@@ -51,12 +55,36 @@ const SamplePage = () => {
       .finally(function () {
         // always executed
       });
-  }, []);
+  }, [user_credent.id]);
+
+  const [maxMonthlyOutcome, setMaxMonthlyOutcome] = useState(null);
+
+  useEffect(() => {
+    console.log("Fetching Max Monthly Outcome...");
+    axios({
+      method: "get",
+      url: "http://localhost:8080/mmo/find",
+      params: {
+        idUsers: user_credent.id,
+        getLast: true,
+      },
+    })
+      .then(function (response) {
+        console.log("Fetched Max Monthly Outcome:", response.data.data);
+        setMaxMonthlyOutcome(response.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {});
+  }, [user_credent.id]);
+
+  console.log("Max Monthly Outcome:", maxMonthlyOutcome);
 
   // Filter cashflows for incoming cashflows (arus === 'i') and current month
   const incomingCashflowsThisMonth = cashflows.filter((cashflow) => {
     const cashflowMonth = moment(cashflow.tanggal).month(); // Get the month of the cashflow
-    const currentMonth = moment().month(); // Get the current month  
+    const currentMonth = moment().month(); // Get the current month
     return cashflowMonth === currentMonth && cashflow.arus === "i"; // Filter for current month and incoming
   });
 
@@ -74,7 +102,7 @@ const SamplePage = () => {
   // Filter cashflows for outcoming cashflows (arus === 'o') and current month
   const outcomingCashflowsThisMonth = cashflows.filter((cashflow) => {
     const cashflowMonth = moment(cashflow.tanggal).month(); // Get the month of the cashflow
-    const currentMonth = moment().month(); // Get the current month  
+    const currentMonth = moment().month(); // Get the current month
     return cashflowMonth === currentMonth && cashflow.arus === "o"; // Filter for current month and outcoming
   });
 
@@ -84,28 +112,67 @@ const SamplePage = () => {
     0
   );
 
-  const totalDiff = totalIncomingNominalThisMonth - totalOutcomingNominalThisMonth;
+  const totalDiff =
+    totalIncomingNominalThisMonth - totalOutcomingNominalThisMonth;
 
   const onClickButtonTesting = () => {
-    console.log(cashflows);
-    console.log("total incoming", totalIncomingNominalThisMonth );
-    console.log(totalDiff);
+    // console.log("mmo", maxMonthlyOutcome);
+    console.log(
+      "remain",
+      maxMonthlyOutcome?.nominal
+        ? formatNumber(
+            totalOutcomingNominalThisMonth - maxMonthlyOutcome.nominal
+          )
+        : ""
+    );
   };
 
-  const formatNumber = (number) => {
-    // Convert number to string
-    let str = number.toString();
+  const [nominal, setNominal] = useState(0); // State for the input value
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const onClickEditButton = () => {
+    setModalVisible(true);
+  };
+
+  const onFinishUpdateMmo = (values) => {
+    // Handle the updatedNominal value
+
+    axios({
+      method: "post",
+      url: "http://localhost:8080/mmo/create",
+      data: {
+        id_users: user_credent.id,
+        nominal: values.nominal,
+      },
+    })
+      .then(function (response) {
+        console.log(response.data.data);
+        history.push("/dashboard");
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        // always executed
+      });
+  };
+
+  const formatNumber = (value) => {
+    // Convert value to string
+    // let str = value.toString();
 
     // Split the string into groups of 3 from the end
-    const parts = [];
-    while (str.length > 3) {
-      parts.unshift(str.slice(-3)); // Add the last 3 characters to the start
-      str = str.slice(0, -3); // Remove the last 3 characters
-    }
-    parts.unshift(str); // Add the remaining characters
+    // const parts = [];
+    // while (str.length > 3) {
+    //   parts.unshift(str.slice(-3)); // Add the last 3 characters to the start
+    //   str = str.slice(0, -3); // Remove the last 3 characters
+    // }
+    // parts.unshift(str); // Add the remaining characters
 
     // Join the parts with dots and return
-    return parts.join(".");
+    // return parts.join(".");
+
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
   return (
@@ -115,7 +182,9 @@ const SamplePage = () => {
         <div className="gx-dashboard-flex">
           <div className="gx-dashboard-boxed-content gx-rounded-base">
             <h1>Pemasukan</h1>
-            <p className="income">Rp {formatNumber(totalIncomingNominalThisMonth )}</p>
+            <p className="income">
+              Rp {formatNumber(totalIncomingNominalThisMonth)}
+            </p>
           </div>
           <div className="gx-dashboard-boxed-content gx-rounded-base">
             <h1>Sisa Uang</h1>
@@ -123,18 +192,81 @@ const SamplePage = () => {
           </div>
           <div className="gx-dashboard-boxed-content gx-rounded-base">
             <h1>Pengeluaran</h1>
-            <p className="outcome">Rp {formatNumber(totalOutcomingNominalThisMonth)}</p>
+            <p className="outcome">
+              Rp {formatNumber(totalOutcomingNominalThisMonth)}
+            </p>
           </div>
         </div>
       </div>
       <div className="gx-main-user-container gx-rounded-lg">
+        <h1 style={{ textAlign: "center" }}> Analisis Pengeluaran Bulanan</h1>
+
         <div className="gx-dashboard-flex">
-          <h1> Analisis Pengeluaran Bulanan</h1>
+          <div className="gx-dashboard-boxed-content2 gx-rounded-base">
+            <div className="gx-flex-row">
+              <h1>Maks Pengeluaran Bulanan</h1>
+              <a onClick={onClickEditButton}>
+                <img
+                  src="assets\icons\pencil-square.svg"
+                  style={{ padding: "0 0.2a5rem" }}
+                />
+              </a>
+            </div>
+            <p className="max">
+              Rp
+              {maxMonthlyOutcome?.nominal
+                ? formatNumber(maxMonthlyOutcome.nominal)
+                : ""}
+            </p>
+          </div>
+          <div className="gx-dashboard-boxed-content2 gx-rounded-base">
+            <h1>Sisa Pengeluaran Bulanan</h1>
+            <p className="remain">
+              Rp
+              {maxMonthlyOutcome?.nominal
+                ? formatNumber(
+                    maxMonthlyOutcome.nominal - totalOutcomingNominalThisMonth
+                  )
+                : ""}
+            </p>
+          </div>
         </div>
-        {/* <Button onClick={onClickButtonTesting}>
-          Button Testing
-        </Button> */}
+        {/* <Button onClick={onClickButtonTesting}>Button Testing</Button> */}
       </div>
+      <Modal
+        centered
+        visible={modalVisible}
+        onCancel={() => setModalVisible(false)}
+        footer={null} // Hide the default footer
+        title="Edit Maksimal Pengeluaran Bulanan"
+        icon={<QuestionCircleFilled />}
+      >
+        <Form onFinish={onFinishUpdateMmo} className="gx-px-4">
+          <Form.Item
+            label="Nominal"
+            name="nominal"
+            rules={[
+              {
+                required: true,
+                message: "Please input the updated Nominal!",
+              },
+              {
+                type: "number",
+                min: 10000,
+                message: "Input can't be less than 10000!",
+              },
+            ]}
+          >
+            <InputNumber style={{ width: "100%" }} />
+          </Form.Item>
+
+          <Form.Item>
+            <Button className="gx-mb-0" type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };

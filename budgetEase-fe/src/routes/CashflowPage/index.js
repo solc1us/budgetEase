@@ -277,6 +277,10 @@ const SamplePage = () => {
       });
   }, []);
 
+  const clickButtonAddNewKategori = () => {
+    history.push("/cashflow-newcashflow");
+  };
+
   return (
     <div>
       <h1 className="gx-main-user-main-title">Cashflow</h1>
@@ -297,13 +301,24 @@ const SamplePage = () => {
               // rules={[{ required: true, message: "Input Tidak Valid" }]}
               name="kategori"
             >
-              <Select placeholder="Pilih Kategori" style={{ width: "100%" }}>
+              <Select placeholder="Pilih Kategori" style={{ width: "9rem" }}>
                 {kategori.map((item) => (
                   <Select.Option key={item.id} value={item.kategori}>
                     {item.kategori}
                   </Select.Option>
                 ))}
                 ,
+                <Select.Option key="addNew" value="addNew" style={{ backgroundColor: "#52c41a" }}>
+                  <Link to="/cashflow-newkategori" >
+                    <img
+                      src="/assets/icons/plus.svg"
+                      width="16"
+                      height="16"
+                      alt="Add"
+                    />
+                    <span style={{ color: "black" }}>Add Kategori</span>
+                  </Link>
+                </Select.Option>
               </Select>
             </Form.Item>
             <Form.Item

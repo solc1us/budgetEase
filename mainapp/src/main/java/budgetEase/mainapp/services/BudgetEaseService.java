@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import budgetEase.mainapp.models.Cashflow;
 import budgetEase.mainapp.models.ToDoList;
+import budgetEase.mainapp.repos.MaxMonthlyOutcomeRepo;
 import budgetEase.mainapp.repos.UsersRepo;
 import jakarta.transaction.Transactional;
 
@@ -18,6 +19,9 @@ public class BudgetEaseService {
 
   @Autowired
   UsersRepo usersRepo;
+
+  @Autowired
+  MaxMonthlyOutcomeRepo maxMonthlyOutcomeRepo;
 
   // public List<Cashflow> findByIsSend(List<Cashflow> cashflows, boolean isSend) {
   //   List<Cashflow> filteredCashflows = new ArrayList<>();
