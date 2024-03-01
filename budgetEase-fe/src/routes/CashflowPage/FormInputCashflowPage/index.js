@@ -189,11 +189,20 @@ const SamplePage = () => {
             <Form.Item name="keterangan" label="Keterangan">
               <Input />
             </Form.Item>
-            <Form.Item>
-              <Button className="gx-mb-0" htmlType="submit">
-                <span style={{ color: "black" }}>Submit</span>
-              </Button>
-            </Form.Item>
+            <div className="gx-flex-row gx-justify-content-between">
+              <Form.Item className="gx-mb-0">
+                <Button className="gx-mb-0" htmlType="submit">
+                  <span style={{ color: "black" }}>Submit</span>
+                </Button>
+              </Form.Item>
+              <Form.Item className="gx-mb-0">
+                <Button className="gx-mb-0">
+                  <Link to="/cashflow">
+                  <span style={{ color: "black" }}>Back</span>
+                  </Link>
+                </Button>
+              </Form.Item>
+            </div>
           </Form>
         </div>
       </div>

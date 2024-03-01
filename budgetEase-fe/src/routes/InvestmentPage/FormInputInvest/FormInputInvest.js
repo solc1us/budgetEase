@@ -61,7 +61,7 @@ function FormInputInvest(props) {
         <div className="gx-invest-input-group">
           <Form.Item
             rules={[{ required: true, message: "Input tabungan sekarang!" }]}
-            label="Current Savings (Rp)"
+            label="Tabungan sekarang (Rp)"
             name="current-savings"
           >
             <InputNumber
@@ -71,7 +71,7 @@ function FormInputInvest(props) {
           </Form.Item>
           <Form.Item
             rules={[{ required: true, message: "Input investasi tahunan!" }]}
-            label="Yearly Savings (Rp)"
+            label="Investasi tahunan (Rp)"
             name="yearly-contribution"
           >
             <InputNumber
@@ -90,7 +90,7 @@ function FormInputInvest(props) {
                 message: "Return input minimal 1%!",
               },
             ]}
-            label="Expected Interest (%, per year)"
+            label="Return tahunan (%, per tahun)"
             name="expected-return"
           >
             <InputNumber
@@ -112,7 +112,7 @@ function FormInputInvest(props) {
                 message: "Waktu input maksimal 70 tahun!",
               },
             ]}
-            label="Investment Duration (years)"
+            label="Durasi investasi (tahun)"
             name="duration"
           >
             <InputNumber

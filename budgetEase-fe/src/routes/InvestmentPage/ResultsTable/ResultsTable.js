@@ -24,24 +24,24 @@ const formatter = new Intl.NumberFormat("en-ID", {
 function ResultsTable(props) {
   const columns = [
     {
-      title: "Year",
+      title: "Tahun",
       dataIndex: "year",
       key: "year",
     },
     {
-      title: "Savings End of Year",
+      title: "Tabungan Akhir",
       dataIndex: "savingsEndOfYear",
       key: "savingsEndOfYear",
       render: (text) => formatter.format(text).replace(",", "."),
     },
     {
-      title: "Yearly Interest",
+      title: "Keuntungan Tahunan",
       dataIndex: "yearlyInterest",
       key: "yearlyInterest",
       render: (text) => formatter.format(text).replace(",", "."),
     },
     {
-      title: "Total Interest",
+      title: "Total Keuntungan",
       dataIndex: "totalInterest",
       key: "totalInterest",
       render: (text, record) => {
@@ -54,7 +54,7 @@ function ResultsTable(props) {
       },
     },
     {
-      title: "Invested Capital",
+      title: "Uang Investasi",
       dataIndex: "investedCapital",
       key: "investedCapital",
       render: (text, record) => {

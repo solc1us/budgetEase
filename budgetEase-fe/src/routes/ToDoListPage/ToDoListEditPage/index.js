@@ -8,6 +8,7 @@ import { CheckCircleFilled, ExclamationCircleFilled } from "@ant-design/icons";
 import { Form, Input, Button, DatePicker, Modal, Row, Col, Switch } from "antd";
 
 import moment from "moment";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 const { RangePicker } = DatePicker;
 
@@ -87,7 +88,6 @@ function ToDoEditForm({ initialValues }) {
     // Now 'startDate' and 'endDate' are strings
     console.log(startDate, endDate);
 
-
     axios({
       method: "put",
       url: "http://localhost:8080/todolist/update",
@@ -165,11 +165,7 @@ function ToDoEditForm({ initialValues }) {
       >
         <RangePicker />
       </Form.Item>
-      <Form.Item
-        name="check"
-        label="is Done?"
-        valuePropName="checked"
-      >
+      <Form.Item name="check" label="is Done?" valuePropName="checked">
         <Switch
           // onChange={onChangeSwitch}
           checkedChildren="True"
@@ -184,11 +180,20 @@ function ToDoEditForm({ initialValues }) {
       >
         <Input />
       </Form.Item>
-      <Form.Item>
-        <Button className="" htmlType="submit">
-          <span style={{ color: "black" }}>Edit</span>
-        </Button>
-      </Form.Item>
+      <div className="gx-flex-row gx-justify-content-between">
+        <Form.Item className="gx-mb-0">
+          <Button className="gx-mb-0" htmlType="submit">
+            <span style={{ color: "black" }}>Edit</span>
+          </Button>
+        </Form.Item>
+        <Form.Item className="gx-mb-0">
+          <Button className="gx-mb-0">
+            <Link to="/todolist">
+              <span style={{ color: "black" }}>Back</span>
+            </Link>
+          </Button>
+        </Form.Item>
+      </div>
       {/* <Button onClick={onClickButtonTest}>
         <span style={{ color: "black" }}>button testing console log</span>
       </Button> */}

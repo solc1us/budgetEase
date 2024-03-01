@@ -6,6 +6,7 @@ import axios from "axios";
 
 import { CheckCircleFilled, ExclamationCircleFilled } from "@ant-design/icons";
 import { Form, Input, Button, DatePicker, Modal, Row, Col } from "antd";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 const { RangePicker } = DatePicker;
 
@@ -93,26 +94,35 @@ const SamplePage = () => {
         <div className="gx-flex-column gx-px-3">
           <Form onFinish={onFinish} onFinishFailed={onFinishFailed}>
             <Form.Item
-              rules={[{ required: true, message: "Input tanggal dan deadline!" }]}
+              rules={[
+                { required: true, message: "Input tanggal dan deadline!" },
+              ]}
               name="date"
               label="Tanggal & Deadline"
             >
               <RangePicker onChange={onChangeDate} />
             </Form.Item>
             <Form.Item
-              rules={[
-                { required: true, message: "Input kegiatan anda!" },
-              ]}
+              rules={[{ required: true, message: "Input kegiatan anda!" }]}
               name="kegiatan"
               label="Kegiatan"
             >
               <Input />
             </Form.Item>
-            <Form.Item>
-              <Button className="" htmlType="submit">
-                <span style={{ color: "black" }}>Submit</span>
-              </Button>
-            </Form.Item>
+            <div className="gx-flex-row gx-justify-content-between">
+              <Form.Item className="gx-mb-0">
+                <Button className="gx-mb-0" htmlType="submit">
+                  <span style={{ color: "black" }}>Submit</span>
+                </Button>
+              </Form.Item>
+              <Form.Item className="gx-mb-0">
+                <Button className="gx-mb-0">
+                  <Link to="/todolist">
+                    <span style={{ color: "black" }}>Back</span>
+                  </Link>
+                </Button>
+              </Form.Item>
+            </div>
           </Form>
         </div>
       </div>
