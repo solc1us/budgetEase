@@ -1,31 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Form, Input } from "antd";
 import { Link, useHistory } from "react-router-dom";
-
-import budgetEaseLogoMain from "./budgetEase-Logo-Main.png"
-
+import budgetEaseLogoMain from "./budgetEase-Logo-Main.png";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  hideMessage,
-  showAuthLoader,
-  userFacebookSignIn,
-  userGithubSignIn,
-  userGoogleSignIn,
-  userSignUp,
-  userTwitterSignIn,
-} from "../appRedux/actions";
-
+import { hideMessage, showAuthLoader } from "../appRedux/actions";
 import AuthActions from "../appRedux/reducers/AuthRedux";
-
 import IntlMessages from "util/IntlMessages";
 import { message } from "antd/lib/index";
 import CircularProgress from "../components/CircularProgress";
-import GoogleOutlined from "@ant-design/icons/lib/icons/GoogleOutlined";
-import FacebookOutlined from "@ant-design/icons/lib/icons/FacebookOutlined";
-import GithubOutlined from "@ant-design/icons/lib/icons/GithubOutlined";
-import TwitterOutlined from "@ant-design/icons/lib/icons/TwitterOutlined";
-
-const FormItem = Form.Item;
 
 const SignUp = (props) => {
   const dispatch = useDispatch();
@@ -48,8 +30,7 @@ const SignUp = (props) => {
   const onFinishFailed = (errorInfo) => {};
 
   const onFinish = (values) => {
-    console.log(values)
-
+    console.log(values);
     dispatch(showAuthLoader());
     dispatch(AuthActions.registerUserRequest(values));
   };
@@ -78,7 +59,7 @@ const SignUp = (props) => {
       <div className="gx-app-login-container">
         <div className="gx-app-logo-content">
           <div className="gx-app-logo">
-            <img alt="example" src={budgetEaseLogoMain} width={300}/>
+            <img alt="example" src={budgetEaseLogoMain} width={300} />
           </div>
         </div>
         <div className="gx-app-login-main-content">
@@ -89,63 +70,51 @@ const SignUp = (props) => {
               name="basic"
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
-              className="gx-signin-form gx-form-row0"
-            >
-              <FormItem
-                rules={[
-                  { required: true, message: "Please input your username!" },
-                ]}
-                name="username"
-              >
+              className="gx-signin-form gx-form-row0">
+              <Form.Item
+                rules={[{ required: true, message: "Please input your username!" }]}
+                name="username">
                 <Input placeholder="Username" />
-              </FormItem>
-
-              <FormItem
+              </Form.Item>
+              <Form.Item
                 name="email"
-                rules={[
-                  {
+                rules={[{
                     required: true,
                     type: "email",
-                    message: "The input is not valid E-mail!",
-                  },
-                ]}
-              >
+                    message: "The input is not valid E-mail!"}]}>
                 <Input placeholder="Email" />
-              </FormItem>
-              <FormItem
+              </Form.Item>
+              <Form.Item
                 name="password"
-                rules={[
-                  { required: true, message: "Please input your Password!" },
-                ]}
-              >
+                rules={[{ required: true, message: "Please input your Password!" }]}>
                 <Input
                   type="password"
                   placeholder="Password"
-                  onChange={handlePasswordChange}
-                />
-              </FormItem>
-              <FormItem
+                  onChange={handlePasswordChange}/>
+              </Form.Item>
+              <Form.Item
                 name="confirm-password"
                 rules={[
                   { required: true, message: "Please confirm your Password!" },
                   { validator: validateConfirmPassword },
-                ]}
-              >
+                ]}>
                 <Input
                   type="password"
                   placeholder="Confirm Password"
-                  onChange={handleConfirmPasswordChange}
-                />
-              </FormItem>
+                  onChange={handleConfirmPasswordChange}/>
+              </Form.Item>
               <Form.Item>
-                <Button type="primary" className="gx-mb-0 gx-w-100" htmlType="submit">
+                <Button
+                  type="primary"
+                  className="gx-mb-0 gx-w-100"
+                  htmlType="submit">
                   <IntlMessages id="app.userAuth.signUp" />
                 </Button>
               </Form.Item>
               <Form.Item>
-                <p className="gx-signin-switch-login-register">Already have an account? <Link to="/signin">Login here!</Link></p>
+                <p className="gx-signin-switch-login-register">
+                  Already have an account? <Link to="/signin">Login here!</Link></p>
               </Form.Item>
-              
             </Form>
           </div>
           {loader && (

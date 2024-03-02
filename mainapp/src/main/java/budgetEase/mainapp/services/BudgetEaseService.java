@@ -23,16 +23,6 @@ public class BudgetEaseService {
   @Autowired
   MaxMonthlyOutcomeRepo maxMonthlyOutcomeRepo;
 
-  // public List<Cashflow> findByIsSend(List<Cashflow> cashflows, boolean isSend) {
-  //   List<Cashflow> filteredCashflows = new ArrayList<>();
-  //   for (Cashflow cashflow : cashflows) {
-  //     if (cashflow.isSend() == isSend) {
-  //       filteredCashflows.add(cashflow);
-  //     }
-  //   }
-  //   return filteredCashflows;
-  // }
-
   public List<ToDoList> findToDoListByDateRange(List<ToDoList> toDoLists, LocalDate dateFrom, LocalDate dateTo) {
     List<ToDoList> filteredToDoLists = new ArrayList<>();
     for (ToDoList toDoList : toDoLists) {

@@ -27,14 +27,13 @@ const SamplePage = () => {
   const user_credent = localStorage.getItem("user_credent")
     ? JSON.parse(localStorage.getItem("user_credent"))
     : null;
+  const history = useHistory();
+  const [kategori, setKategori] = useState([]);
+  const [cashflow, setCashflow] = useState([]);
 
   const onChangeSwitch = (e) => {
     console.log(`switch to ${e}`);
   };
-
-  const history = useHistory();
-
-  const [cashflow, setCashflow] = useState([]);
 
   useEffect(() => {
     axios({
@@ -45,7 +44,6 @@ const SamplePage = () => {
       },
     })
       .then(function (response) {
-        console.log("dari useEffect", response.data.data);
         setCashflow(response.data.data);
       })
       .catch(function (error) {
@@ -59,7 +57,6 @@ const SamplePage = () => {
   const onFinishFailed = (errorInfo) => {};
 
   const onFinish = (values) => {
-    // console.log(user_credent.id);
 
     const { date } = values;
     let dateFrom;
@@ -104,10 +101,6 @@ const SamplePage = () => {
       });
   };
 
-  const onClickButtonTest = () => {
-    console.log(cashflow);
-  };
-
   const tableData = cashflow.map((item, index) => {
     return { key: item.id, no: index + 1, ...item };
   });
@@ -127,7 +120,6 @@ const SamplePage = () => {
       title: "Nominal",
       dataIndex: "nominal",
       key: "nominal",
-      // defaultSortOrder: 'descend',
       sorter: (a, b) => a.nominal - b.nominal,
       render: (nominal) => <span>Rp {nominal.toLocaleString("id-ID")}</span>,
     },
@@ -223,14 +215,9 @@ const SamplePage = () => {
               onOk() {},
               onCancel() {},
             });
-
-            // Jika berhasil, atur data
           })
           .catch((error) => {
-            // Jika terjadi kesalahan, atur pesan kesalahan dan/atau redirect ke halaman lain
-            // setError("Data tidak ditemukan");
             console.log(error);
-            // navigate("/"); // Ganti dengan URL halaman lain jika diperlukan
           });
       },
       onCancel() {},
@@ -244,18 +231,11 @@ const SamplePage = () => {
       .then((response) => {
         console.log(response);
         history.push(`/cashflow-edit/${id}`);
-
-        // Jika berhasil, atur data
       })
       .catch((error) => {
-        // Jika terjadi kesalahan, atur pesan kesalahan dan/atau redirect ke halaman lain
-        // setError("Data tidak ditemukan");
         console.log(error);
-        // navigate("/"); // Ganti dengan URL halaman lain jika diperlukan
       });
   };
-
-  const [kategori, setKategori] = useState([]);
 
   useEffect(() => {
     axios({
@@ -273,13 +253,8 @@ const SamplePage = () => {
         console.log(error);
       })
       .finally(function () {
-        // always executed
       });
   }, []);
-
-  const clickButtonAddNewKategori = () => {
-    history.push("/cashflow-newcashflow");
-  };
 
   return (
     <div>
@@ -289,27 +264,23 @@ const SamplePage = () => {
           <Form
             layout="inline"
             onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-          >
-            <Form.Item
-              // rules={[{ required: true, message: "Input tanggal pencarian!" }]}
-              name="date"
-            >
+            onFinishFailed={onFinishFailed}>
+            <Form.Item name="date">
               <RangePicker />
             </Form.Item>
             <Form.Item
-              // rules={[{ required: true, message: "Input Tidak Valid" }]}
-              name="kategori"
-            >
+              name="kategori">
               <Select placeholder="Pilih Kategori" style={{ width: "9rem" }}>
                 {kategori.map((item) => (
                   <Select.Option key={item.id} value={item.kategori}>
                     {item.kategori}
                   </Select.Option>
-                ))}
-                ,
-                <Select.Option key="addNew" value="addNew" style={{ backgroundColor: "#52c41a" }}>
-                  <Link to="/cashflow-newkategori" >
+                ))},
+                <Select.Option
+                  key="addNew"
+                  value="addNew"
+                  style={{ backgroundColor: "#52c41a" }}>
+                  <Link to="/cashflow-newkategori">
                     <img
                       src="/assets/icons/plus.svg"
                       width="16"
@@ -325,13 +296,11 @@ const SamplePage = () => {
               name="arus"
               label="Arus"
               initialValue={false}
-              valuePropName="checked"
-            >
+              valuePropName="checked">
               <Switch
                 onChange={onChangeSwitch}
                 checkedChildren="In"
-                unCheckedChildren="Out"
-              />
+                unCheckedChildren="Out"/>
             </Form.Item>
             <Form.Item>
               <Button className="gx-mb-0 gx-w-100" htmlType="submit">
@@ -348,9 +317,6 @@ const SamplePage = () => {
         </div>
         <div className="gx-main-user-table">
           <Table dataSource={tableData} columns={columns}></Table>
-          {/* <Button onClick={onClickButtonTest}>
-            Button testing utk console log
-          </Button> */}
         </div>
       </div>
     </div>

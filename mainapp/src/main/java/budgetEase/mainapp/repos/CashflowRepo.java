@@ -7,8 +7,6 @@ import org.springframework.stereotype.Repository;
 import budgetEase.mainapp.models.Cashflow;
 import java.util.List;
 
-
-
 @Repository
 public interface CashflowRepo extends JpaRepository<Cashflow, String>{
 

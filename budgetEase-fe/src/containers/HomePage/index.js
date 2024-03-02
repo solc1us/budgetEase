@@ -1,18 +1,8 @@
 import React, { useEffect } from "react";
-import { Button, Checkbox, Form, Image, Input, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
-
 import budgetEaseLogoMain from "../budgetEase-Logo-Main.png";
-import budgetEaseLogoWhite from "../budgetEase-Logo-White.png";
-
 import { hideMessage } from "../../appRedux/actions";
-
-import AuthActions from "../../appRedux/reducers/AuthRedux";
-import config from "../../util/config";
-
-import IntlMessages from "util/IntlMessages";
-import CircularProgress from "../../components/CircularProgress";
 import Header from "./Header";
 
 const Home = () => {
@@ -39,7 +29,7 @@ const Home = () => {
       <div className="ant-layout">
         <div className="ant-layout-content gx-layout-content">
           <div className="gx-app-home-wrap">
-            <Header></Header>
+            <Header/>
             <div className="gx-app-home-welcome">
               <p>Welcome aboard,</p>
               <img src={budgetEaseLogoMain} height={88} className="gx-mb-5" />
@@ -77,8 +67,7 @@ const Home = () => {
               <div className="gx-app-home-testimoni-box-container">
                 <div className="gx-app-home-testimoni-box-content">
                   <h2>Sasi</h2>
-                  <p>
-                    "Saya merasa sangat terbantu dengan budgetEase. Dengan fitur
+                  <p> "Saya merasa sangat terbantu dengan budgetEase. Dengan fitur
                     pemantauan pengeluaran, saya dapat melihat dengan jelas pola
                     pengeluaran saya dan lebih mudah membuat anggaran.
                     budgetEase benar-benar memudahkan hidup saya dalam mengelola
@@ -87,8 +76,7 @@ const Home = () => {
                 </div>
                 <div className="gx-app-home-testimoni-box-content">
                   <h2>Bilal</h2>
-                  <p>
-                    "Sebagai pebisnis kecil, budgetEase memudahkan pencatatan
+                  <p> "Sebagai pebisnis kecil, budgetEase memudahkan pencatatan
                     transaksi bisnis dan pemantauan arus kas. Saya dapat dengan
                     cepat mengakses laporan keuangan, membantu pengambilan
                     keputusan yang lebih cerdas untuk pertumbuhan bisnis saya."
@@ -96,8 +84,7 @@ const Home = () => {
                 </div>
                 <div className="gx-app-home-testimoni-box-content">
                   <h2>Fahira</h2>
-                  <p>
-                    "budgetEase membawa kemudahan dalam merencanakan keuangan
+                  <p> "budgetEase membawa kemudahan dalam merencanakan keuangan
                     selama masa studi. Saya dapat dengan mudah melihat
                     pengeluaran, serta mengalokasikan dana untuk kebutuhan
                     akademik dan kehidupan sosial. Ini benar-benar membantu
@@ -112,8 +99,7 @@ const Home = () => {
                   <img src={budgetEaseLogoMain} height={80} />
                   <h1>budgetEase - PT Gemilang Keuangan Indonesia</h1>
                   <p>Perum Griya Alam Sentosa</p>
-                  <p>
-                    Jl. Griya Alam Sentosa, Blok R-23 No 9, RT 16 RW 10, Kel.
+                  <p> Jl. Griya Alam Sentosa, Blok R-23 No 9, RT 16 RW 10, Kel.
                     Pasirangin, Kec. Cileungsi, Kabupaten Bogor, Jawa Barat
                     16820
                   </p>

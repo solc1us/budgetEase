@@ -2,32 +2,16 @@ import React, { useEffect } from "react";
 import { Button, Checkbox, Form, Image, Input, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
-
 import budgetEaseLogoMain from "./budgetEase-Logo-Main.png";
-
-import {
-  hideMessage,
-  showAuthLoader,
-  userFacebookSignIn,
-  userGithubSignIn,
-  userGoogleSignIn,
-  userSignIn,
-  userTwitterSignIn,
-} from "../appRedux/actions";
-
+import { hideMessage } from "../appRedux/actions";
 import AuthActions from "../appRedux/reducers/AuthRedux";
-import config from "../util/config";
-
 import IntlMessages from "util/IntlMessages";
 import CircularProgress from "../components/CircularProgress";
 
 const SignIn = () => {
-  const dispatch = useDispatch();
-  const { loader, alertMessage, showMessage, authUser } = useSelector(
-    ({ auth }) => auth
-  );
-
   const history = useHistory();
+  const dispatch = useDispatch();
+  const { loader, alertMessage, showMessage, authUser } = useSelector(({ auth }) => auth);
 
   useEffect(() => {
     if (showMessage) {
@@ -44,8 +28,6 @@ const SignIn = () => {
 
   const onFinish = (values) => {
     dispatch(AuthActions.loginUserRequest(values));
-    // dispatch(showAuthLoader());
-    // dispatch(userSignIn(values));
   };
 
   return (
@@ -64,47 +46,36 @@ const SignIn = () => {
               name="basic"
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
-              className="gx-signin-form gx-form-row0"
-            >
+              className="gx-signin-form gx-form-row0">
               <Form.Item
                 initialValue=""
-                rules={[
-                  {
-                    required: true,
-                    message: "The input is not valid Username!",
-                  },
-                ]}
-                name="username"
-              >
+                rules={[{ required: true, message: "The input is not valid Username!" }]}
+                name="username">
                 <Input placeholder="Username" />
               </Form.Item>
               <Form.Item
                 initialValue=""
-                rules={[
-                  { required: true, message: "Please input your Password!" },
-                ]}
-                name="password"
-              >
+                rules={[{ required: true, message: "Please input your Password!" }]}
+                name="password">
                 <Input type="password" placeholder="Password" />
               </Form.Item>
               <Form.Item>
-                <Button type="primary" className="gx-mb-0 gx-w-100" htmlType="submit">
+                <Button
+                  type="primary"
+                  className="gx-mb-0 gx-w-100"
+                  htmlType="submit">
                   <IntlMessages id="app.userAuth.signIn" />
                 </Button>
               </Form.Item>
               <Form.Item>
                 <p className="gx-signin-switch-login-register">
                   Don't have an account?{" "}
-                  <Link to="/signup">Register here!</Link>
-                </p>
+                  <Link to="/signup">Register here!</Link></p>
               </Form.Item>
             </Form>
           </div>
-
           {loader ? (
-            <div className="gx-loader-view">
-              <CircularProgress />
-            </div>
+            <div className="gx-loader-view"><CircularProgress/></div>
           ) : null}
           {showMessage ? message.error(alertMessage.toString()) : null}
         </div>

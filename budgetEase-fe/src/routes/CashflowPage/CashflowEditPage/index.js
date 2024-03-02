@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
-
 import { useHistory, useParams } from "react-router-dom";
-
 import axios from "axios";
-
-import { CheckCircleFilled, ExclamationCircleFilled } from "@ant-design/icons";
+import { CheckCircleFilled } from "@ant-design/icons";
 import {
   Form,
   Input,
@@ -17,41 +14,26 @@ import {
   InputNumber,
   Select,
 } from "antd";
-
 import moment from "moment";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
-
-const { RangePicker } = DatePicker;
 
 const SamplePage = () => {
   const { id } = useParams();
   const history = useHistory();
   const [initialData, setInitialData] = useState();
-
-  const user_credent = localStorage.getItem("user_credent")
-    ? JSON.parse(localStorage.getItem("user_credent"))
-    : null;
-
-  const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Lakukan permintaan ke server dengan ID yang ada dalam URL
     axios({
       method: "get",
       url: `http://localhost:8080/cashflow/findbyid/${id}`,
     })
       .then((response) => {
-        // Jika berhasil, atur data
-        // console.log(id);
-
         setInitialData(response.data.data);
       })
       .catch((error) => {
-        // Jika terjadi kesalahan, atur pesan kesalahan dan/atau redirect ke halaman lain
         setError("Data tidak ditemukan");
         console.log(error);
-        // navigate("/"); // Ganti dengan URL halaman lain jika diperlukan
       });
   }, [id, history]);
 
@@ -152,11 +134,6 @@ function CashflowEditForm({ initialValues }) {
     console.log("failed");
   };
 
-  const onClickButtonTest = () => {
-    console.log("initialdata", initialData);
-    console.log("arus", initialValues.arus);
-  };
-
   const [kategori, setKategori] = useState([]);
 
   useEffect(() => {
@@ -175,7 +152,6 @@ function CashflowEditForm({ initialValues }) {
         console.log(error);
       })
       .finally(function () {
-        // always executed
       });
   }, []);
 
@@ -197,7 +173,6 @@ function CashflowEditForm({ initialValues }) {
       </Form.Item>
       <Form.Item name="arus" label="Arus" valuePropName="checked">
         <Switch
-          // onChange={onChangeSwitch}
           checkedChildren="In"
           unCheckedChildren="Out"
         />
@@ -240,9 +215,6 @@ function CashflowEditForm({ initialValues }) {
           </Button>
         </Form.Item>
       </div>
-      {/* <Button onClick={onClickButtonTest}>
-        <span style={{ color: "black" }}>button testing console log</span>
-      </Button> */}
     </Form>
   );
 }

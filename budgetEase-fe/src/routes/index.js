@@ -1,24 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {Route, Switch} from "react-router-dom";
 import asyncComponent from "util/asyncComponent";
 
 const App = ({  match}) => {
-  // const [loading, setLoading] = useState(true);
-  // const storedUserData = JSON.parse(localStorage.getItem("user_credent"));
-
-  // // Ambil data pengguna dari localStorage saat komponen pertama kali dimuat
-  // useEffect(() => {
-  //   const fetchData = () => {
-  //     setLoading(false);
-  //   };
-
-  //   fetchData();
-  // }, []); 
-
-  // console.log(storedUserData, "ini dari index di route utama storedUserData")
 
   return (
-
     <div className="gx-main-content-wrapper">
     <Switch>
       <Route path={`${match.url}dashboard`} component={asyncComponent(() => import('./DashboardPage'))}/>

@@ -148,44 +148,35 @@ public class CashflowController {
       @RequestParam(value = "idUsers", required = true) String idUsers,
       @RequestParam(value = "dateFrom", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
       @RequestParam(value = "dateTo", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo,
-      @RequestParam(value = "arus", required = false) String arus,
-      @RequestParam(value = "kategori", required = false) String kategori) {
+      @RequestParam(value = "arus", required = false) String arus, @RequestParam(value = "kategori", required = false) String kategori) {
 
     MessageModel msg = new MessageModel();
 
     try {
-
       if (idUsers.isEmpty() || idUsers.trim().length() < 1 || idUsers.isBlank()) {
         msg.setMessage("'idUsers' is required in the request param.");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
       }
-
       if (dateTo != null && dateFrom == null) {
         msg.setMessage("'dateFrom' is required if you insert 'dateTo'.");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
       }
 
       List<Cashflow> cashflow = cashflowRepo.findByIdUsers(idUsers);
-
       List<Cashflow> filteredCashflows = new ArrayList<>(cashflow);
 
       if (arus != null && !arus.isEmpty()) {
         filteredCashflows.retainAll(budgetEaseService.findCashflowByArus(filteredCashflows, arus));
       }
-
       if (dateFrom != null) {
-
         if (dateTo == null) {
           dateTo = dateFrom;
         }
-
         filteredCashflows.retainAll(budgetEaseService.findCashflowByDateRange(filteredCashflows, dateFrom, dateTo));
       }
-
       if (kategori != null && !kategori.isEmpty()) {
         filteredCashflows.retainAll(budgetEaseService.findCashflowByKategori(filteredCashflows, kategori));
       }
-
       Collections.sort(filteredCashflows, Comparator.comparing(Cashflow::getTanggal).reversed());
 
       msg.setMessage("Sukses");
@@ -245,7 +236,7 @@ public class CashflowController {
 
         cashflowRepo.deleteById(id);
 
-        msg.setMessage("Berhasil menghapus yang keterangannya: " + cashflow.get().getKeterangan());
+        msg.setMessage("Berhasil menghapus cashflow yang keterangannya: " + cashflow.get().getKeterangan());
         msg.setData(cashflow);
         return ResponseEntity.status(HttpStatus.OK).body(msg);
       } else {
@@ -257,5 +248,4 @@ public class CashflowController {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
   }
-
 }
