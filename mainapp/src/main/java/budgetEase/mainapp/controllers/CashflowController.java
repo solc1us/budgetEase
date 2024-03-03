@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -148,7 +147,8 @@ public class CashflowController {
       @RequestParam(value = "idUsers", required = true) String idUsers,
       @RequestParam(value = "dateFrom", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
       @RequestParam(value = "dateTo", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo,
-      @RequestParam(value = "arus", required = false) String arus, @RequestParam(value = "kategori", required = false) String kategori) {
+      @RequestParam(value = "arus", required = false) String arus,
+      @RequestParam(value = "kategori", required = false) String kategori) {
 
     MessageModel msg = new MessageModel();
 
@@ -177,7 +177,24 @@ public class CashflowController {
       if (kategori != null && !kategori.isEmpty()) {
         filteredCashflows.retainAll(budgetEaseService.findCashflowByKategori(filteredCashflows, kategori));
       }
-      Collections.sort(filteredCashflows, Comparator.comparing(Cashflow::getTanggal).reversed());
+
+      // Collections.sort(filteredCashflows,
+      // Comparator.comparing(Cashflow::getTanggal).reversed());
+
+      Collections.sort(filteredCashflows, (c1, c2) -> {
+        // First, compare by 'tanggal' field
+        int compareTanggal = c1.getTanggal().compareTo(c2.getTanggal());
+
+        // If 'tanggal' fields are equal, then compare by 'dateCreated' field in reverse
+        // order
+        if (compareTanggal == 0) {
+          return c1.getDate_created().compareTo(c2.getDate_created());
+        }
+
+        return compareTanggal;
+      });
+
+      Collections.reverse(filteredCashflows);
 
       msg.setMessage("Sukses");
       msg.setData(filteredCashflows);

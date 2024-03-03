@@ -85,7 +85,7 @@ public class BudgetEaseController {
       users.setPassword(data.getPassword());
       users.setEmail(data.getEmail());
       users.setNo_hp(data.getNo_hp());
-      users.setCreated_date(LocalDateTime.now());
+      users.setDate_created(LocalDateTime.now());
 
       usersRepo.save(users);
 

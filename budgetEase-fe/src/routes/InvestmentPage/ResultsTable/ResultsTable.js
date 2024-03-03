@@ -1,18 +1,6 @@
 import React, { useState } from "react";
 
-import {
-  Form,
-  Input,
-  Button,
-  Modal,
-  Table,
-  Switch,
-  DatePicker,
-  Space,
-  Checkbox,
-  Row,
-  Col,
-} from "antd";
+import { Table } from "antd";
 
 const formatter = new Intl.NumberFormat("en-ID", {
   style: "currency",
@@ -32,13 +20,13 @@ function ResultsTable(props) {
       title: "Tabungan Akhir",
       dataIndex: "savingsEndOfYear",
       key: "savingsEndOfYear",
-      render: (text) => formatter.format(text).replace(",", "."),
+      render: (text) => formatter.format(text).replace(/,/g, "."),
     },
     {
       title: "Keuntungan Tahunan",
       dataIndex: "yearlyInterest",
       key: "yearlyInterest",
-      render: (text) => formatter.format(text).replace(",", "."),
+      render: (text) => formatter.format(text).replace(/,/g, "."),
     },
     {
       title: "Total Keuntungan",
@@ -50,7 +38,7 @@ function ResultsTable(props) {
           record.savingsEndOfYear -
           props.initialInvestment -
           record.yearlyContribution * record.year;
-        return formatter.format(totalInterest).replace(",", ".");
+        return formatter.format(totalInterest).replace(/,/g, ".");
       },
     },
     {
@@ -61,7 +49,7 @@ function ResultsTable(props) {
         // console.log(props.initialInvestment, record.yearlyContribution, record.year)
         const investedCapital =
           props.initialInvestment + record.yearlyContribution * record.year;
-        return formatter.format(investedCapital).replace(",", ".");
+        return formatter.format(investedCapital).replace(/,/g, ".");
       },
     },
   ];

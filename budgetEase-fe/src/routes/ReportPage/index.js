@@ -135,7 +135,7 @@ const SamplePage = () => {
 
   return (
     <div>
-      <h1 className="gx-main-user-main-title">Yearly Report</h1>
+      <h1 className="gx-main-user-main-title">Laporan Tahunan</h1>
       <div className="gx-main-user-container gx-rounded-lg">
         <div>
           <h1 className="gx-font-weight-semi-bold">Pemasukan Tahunan</h1>
