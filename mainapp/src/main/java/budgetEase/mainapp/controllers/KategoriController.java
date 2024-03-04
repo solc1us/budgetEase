@@ -155,24 +155,24 @@ public class KategoriController {
     return ResponseEntity.status(HttpStatus.OK).body("Semua item berhasil dihapus");
   }
 
-  @DeleteMapping("/deletebyid/{id}")
-  public ResponseEntity<Object> deleteById(@PathVariable("id") String id) {
+  @DeleteMapping("/deletebyid")
+  public ResponseEntity<Object> deleteById(@RequestBody Kategori data) {
 
     MessageModel msg = new MessageModel();
 
     try {
 
-      Optional<Kategori> kategori = kategoriRepo.findById(id);
+      Optional<Kategori> kategori = kategoriRepo.findById(data.getId());
 
       if (kategori.isPresent()) {
 
-        kategoriRepo.deleteById(id);
+        kategoriRepo.deleteById(data.getId());
 
-        msg.setMessage("Berhasil menghapus yang kegiatannya: " + kategori.get().getKategori());
+        msg.setMessage("Berhasil menghapus kategori : " + kategori.get().getKategori());
         msg.setData(kategori);
         return ResponseEntity.status(HttpStatus.OK).body(msg);
       } else {
-        msg.setMessage("Tidak dapat menemukan kategori dengan id: " + id);
+        msg.setMessage("Tidak dapat menemukan kategori dengan id: " + data.getId());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
       }
 

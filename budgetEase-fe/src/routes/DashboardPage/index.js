@@ -81,23 +81,25 @@ const SamplePage = () => {
 
   console.log("Max Monthly Outcome:", maxMonthlyOutcome);
 
-  // Filter cashflows for incoming cashflows (arus === 'i') and current month
-  const incomingCashflowsThisMonth = cashflows.filter((cashflow) => {
-    const cashflowMonth = moment(cashflow.tanggal).month(); // Get the month of the cashflow
-    const currentMonth = moment().month(); // Get the current month
-    return cashflowMonth === currentMonth && cashflow.arus === "i"; // Filter for current month and incoming
+  // Filter cashflows for incoming cashflows (arus === 'i)
+  const incomingCashflow = cashflows.filter((cashflow) => {
+    return cashflow.arus === "i";
   });
 
-  // Calculate total nominal for incoming cashflows this month
-  const totalIncomingNominalThisMonth = incomingCashflowsThisMonth.reduce(
+  const totalIncomingNominal = incomingCashflow.reduce(
     (total, cashflow) => total + cashflow.nominal,
     0
   );
 
-  // console.log(
-  //   "Total Incoming Nominal for Current Month:",
-  //   totalIncomingNominalThisMonth
-  // );
+  // Filter cashflows for incoming cashflows (arus === 'i)
+  const outcomingCashflow = cashflows.filter((cashflow) => {
+    return cashflow.arus === "o";
+  });
+
+  const totalOutcomingNominal = outcomingCashflow.reduce(
+    (total, cashflow) => total + cashflow.nominal,
+    0
+  );
 
   // Filter cashflows for outcoming cashflows (arus === 'o') and current month
   const outcomingCashflowsThisMonth = cashflows.filter((cashflow) => {
@@ -112,19 +114,11 @@ const SamplePage = () => {
     0
   );
 
-  const totalDiff =
-    totalIncomingNominalThisMonth - totalOutcomingNominalThisMonth;
+  const totalDiff = totalIncomingNominal - totalOutcomingNominal;
 
   const onClickButtonTesting = () => {
-    // console.log("mmo", maxMonthlyOutcome);
-    console.log(
-      "remain",
-      maxMonthlyOutcome?.nominal
-        ? formatNumber(
-            totalOutcomingNominalThisMonth - maxMonthlyOutcome.nominal
-          )
-        : ""
-    );
+    console.log("nominal", totalIncomingNominal);
+    console.log("incoming cashflow", incomingCashflow);
   };
 
   const [nominal, setNominal] = useState(0); // State for the input value
@@ -182,9 +176,7 @@ const SamplePage = () => {
         <div className="gx-dashboard-flex">
           <div className="gx-dashboard-boxed-content gx-rounded-base">
             <h1>Pemasukan</h1>
-            <p className="income">
-              Rp {formatNumber(totalIncomingNominalThisMonth)}
-            </p>
+            <p className="income">Rp {formatNumber(totalIncomingNominal)}</p>
           </div>
           <div className="gx-dashboard-boxed-content gx-rounded-base">
             <h1>Sisa Uang</h1>
@@ -193,7 +185,7 @@ const SamplePage = () => {
           <div className="gx-dashboard-boxed-content gx-rounded-base">
             <h1>Pengeluaran</h1>
             <p className="outcome">
-              Rp {formatNumber(totalOutcomingNominalThisMonth)}
+              Rp {formatNumber(totalOutcomingNominal)}
             </p>
           </div>
         </div>
@@ -204,7 +196,7 @@ const SamplePage = () => {
         <div className="gx-dashboard-flex">
           <div className="gx-dashboard-boxed-content2 gx-rounded-base">
             <div className="gx-flex-row">
-              <h1>Maks Pengeluaran Bulanan</h1>
+              <h1>Maks Pengeluaran</h1>
               <a onClick={onClickEditButton}>
                 <img
                   src="assets\icons\pencil-square.svg"
@@ -220,7 +212,13 @@ const SamplePage = () => {
             </p>
           </div>
           <div className="gx-dashboard-boxed-content2 gx-rounded-base">
-            <h1>Sisa Pengeluaran Bulanan</h1>
+            <h1>Pengeluaran</h1>
+            <p className="outcome">
+              Rp {formatNumber(totalOutcomingNominalThisMonth)}
+            </p>
+          </div>
+          <div className="gx-dashboard-boxed-content2 gx-rounded-base">
+            <h1>Sisa Pengeluaran</h1>
             <p className="remain">
               Rp
               {maxMonthlyOutcome?.nominal

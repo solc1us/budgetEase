@@ -82,14 +82,6 @@ function FormInputInvest(props) {
         </div>
         <div className="gx-invest-input-group">
           <Form.Item
-            rules={[
-              { required: true, message: "Input ekspektasi return!" },
-              {
-                type: "number",
-                min: 1,
-                message: "Return input minimal 1%!",
-              },
-            ]}
             label="Return tahunan (%, per tahun)"
             name="expected-return"
           >
